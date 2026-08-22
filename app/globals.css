@@ -119,6 +119,19 @@
     --grid-line: oklch(1 0 0 / 3%);
 }
 
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-13px);
+  }
+}
+
+.magicBall-anime {
+  animation: float 2s ease-in-out infinite;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
