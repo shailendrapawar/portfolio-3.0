@@ -168,7 +168,7 @@ function InteractiveView() {
               )}
               style={{
                 animationDelay: `${(i % 5) * 0.35}s`,
-                ...(isActive ? { animation: "none" } : {}),
+                animationName: isActive ? "none" : undefined,
               }}
             >
               <TechIcon

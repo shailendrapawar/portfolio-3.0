@@ -164,6 +164,29 @@
   animation: none;
 }
 
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinSlowReverse {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
+}
+
+/* Rotating orbit ring; children counter-rotate to stay upright. */
+.service-ring {
+  animation: spinSlow 24s linear infinite;
+}
+
+.service-unrotate {
+  animation: spinSlowReverse 24s linear infinite;
+}
+
+.float-anime {
+  animation: float 4s ease-in-out infinite;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
