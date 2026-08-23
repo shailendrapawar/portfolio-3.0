@@ -10,24 +10,24 @@ export default function AboutMe() {
     <div className="relative flex min-h-150 w-full max-w-full justify-center overflow-x-clip p-5 sm:min-h-90">
       <section className="animate-in fade-in relative z-10 flex w-full max-w-250 flex-col items-center justify-center gap-8 duration-500 sm:flex-row-reverse sm:gap-12">
         <aside className="z-10 flex w-full flex-col items-center justify-center gap-5 text-foreground sm:flex-1 sm:items-start">
-          <h3 className="animate-in fade-in slide-in-from-bottom-2 text-accent duration-500 sm:text-xl md:text-xl">
+          <h3 className="w-full animate-in fade-in slide-in-from-bottom-2 text-center text-accent duration-500 sm:text-xl md:text-xl">
             ABOUT ME
           </h3>
 
-          <h5 className="animate-in fade-in slide-in-from-bottom-2 delay-100 duration-500 sm:text-xl lg:text-xl">
-            Coding <b className="text-secondary">Dreams</b> into{" "}
-            <b className="text-secondary">Designs</b>
+          <h5 className="w-full animate-in fade-in slide-in-from-bottom-2 text-center delay-100 duration-500 sm:text-xl lg:text-xl">
+            Building <b className="text-secondary">Ideas</b> into{" "}
+            <b className="text-secondary">Reality</b>
           </h5>
 
           <p className="animate-in fade-in slide-in-from-bottom-2 text-center text-sm text-muted-foreground delay-200 duration-700 sm:text-left sm:text-base md:text-lg">
-            Fairly adaptive to any kind of new learnings and conditions, to meet
-            up the mark.
+            I&apos;m a software developer who loves turning ideas into clean,
+            scalable, and meaningful digital experiences.
           </p>
 
           <p className="animate-in fade-in slide-in-from-bottom-2 text-center text-sm text-muted-foreground delay-300 duration-700 sm:text-left sm:text-base md:text-lg">
-            Eager to work with my skillset and abilities where I can contribute
-            to the growth and development of the organization as well as my
-            professional career.
+            From intuitive interfaces to robust backend systems, I enjoy building
+            across the stack. Always learning, experimenting, and finding better
+            ways to solve problems with technology.
           </p>
         </aside>
 

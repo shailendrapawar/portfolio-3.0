@@ -43,11 +43,11 @@ export default function Services() {
     <div className="relative flex min-h-100 w-full animate-in fade-in items-center justify-center overflow-x-clip p-5 duration-500">
       <section className="flex w-full max-w-250 flex-col items-center gap-8 sm:flex-row sm:items-center sm:gap-12 sm:p-5 lg:gap-16">
         <aside className="flex w-full flex-col items-center gap-4 sm:flex-1 sm:items-start">
-          <h3 className="animate-in fade-in slide-in-from-bottom-2 text-center text-xl text-accent duration-500 sm:text-left md:text-2xl">
+          <h3 className="w-full animate-in fade-in slide-in-from-bottom-2 text-center text-xl text-accent duration-500 md:text-2xl">
             Services
           </h3>
 
-          <h4 className="animate-in fade-in slide-in-from-bottom-2 text-center text-xl text-foreground delay-100 duration-500 sm:text-left md:text-2xl">
+          <h4 className="w-full animate-in fade-in slide-in-from-bottom-2 text-center text-xl text-foreground delay-100 duration-500 md:text-2xl">
             What I provide as a <b className="text-secondary">Service</b>
           </h4>
 
