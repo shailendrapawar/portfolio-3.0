@@ -129,6 +129,15 @@ export const backendSkills: ISkills = [
     darkIcon: "skill-icons:rabbitmq-dark",
     defaultIcon: "skill-icons:rabbitmq-dark"
   },
+  {
+    name: "GraphQL",
+    code: "graphql",
+    category: "backend",
+    level: 50,
+    lightIcon: "skill-icons:graphql-light",
+    darkIcon: "skill-icons:graphql-dark",
+    defaultIcon: "skill-icons:graphql-dark"
+  }
 
 ]
 export const databaseSkills: ISkills = [

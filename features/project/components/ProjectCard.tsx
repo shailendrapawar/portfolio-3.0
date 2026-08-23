@@ -81,7 +81,7 @@ function ProjectCard({ data }: { data: IProject }) {
         </p>
 
         {data.skills && (
-          <div className="flex justify-center">
+          <div className="flex justify-start">
             <Image
               key={skillSrc}
               src={skillSrc}
