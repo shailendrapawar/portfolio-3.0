@@ -3,7 +3,13 @@
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { FaServer, FaDatabase } from "react-icons/fa";
+import {
+  FaServer,
+  FaDatabase,
+  FaLaptopCode,
+  FaChartLine,
+  FaCloud,
+} from "react-icons/fa";
 import { FaLink } from "react-icons/fa6";
 import { BsWindowSidebar } from "react-icons/bs";
 
@@ -14,6 +20,13 @@ const wizards = {
     "https://res.cloudinary.com/soty762i/image/upload/v1787428920/purple-wizard-meditating.png",
   dark: "https://res.cloudinary.com/soty762i/image/upload/v1787428920/white-wizard-meditating.png",
 };
+
+const serviceCards = [
+  { title: "Full-Stack Web Development", Icon: FaLaptopCode },
+  { title: "Backend & API Development", Icon: FaServer },
+  { title: "SaaS & Business Applications", Icon: FaChartLine },
+  { title: "Deployment & Cloud Solutions", Icon: FaCloud },
+];
 
 export default function Services() {
   const { resolvedTheme } = useTheme();
@@ -28,27 +41,45 @@ export default function Services() {
 
   return (
     <div className="relative flex min-h-100 w-full animate-in fade-in items-center justify-center overflow-x-clip p-5 duration-500">
-      <section className="flex h-150 w-full max-w-250 flex-col sm:h-100 sm:flex-row-reverse sm:justify-between sm:p-5">
-        <aside className="flex h-[40%] w-full flex-col items-center justify-center gap-2 sm:h-full sm:w-[40%]">
-          <h3 className="animate-in fade-in slide-in-from-bottom-2 text-center text-xl text-accent duration-500 md:text-2xl">
+      <section className="flex w-full max-w-250 flex-col items-center gap-8 sm:flex-row sm:items-center sm:gap-12 sm:p-5 lg:gap-16">
+        <aside className="flex w-full flex-col items-center gap-4 sm:flex-1 sm:items-start">
+          <h3 className="animate-in fade-in slide-in-from-bottom-2 text-center text-xl text-accent duration-500 sm:text-left md:text-2xl">
             Services
           </h3>
 
-          <h4 className="animate-in fade-in slide-in-from-bottom-2 mt-3 text-center text-xl text-foreground delay-100 duration-500 md:text-2xl">
-            What I provide as a{" "}
-            <b className="text-secondary">Service</b>
+          <h4 className="animate-in fade-in slide-in-from-bottom-2 text-center text-xl text-foreground delay-100 duration-500 sm:text-left md:text-2xl">
+            What I provide as a <b className="text-secondary">Service</b>
           </h4>
 
-          <p className="animate-in fade-in slide-in-from-bottom-2 mt-2 text-center text-sm text-muted-foreground delay-200 duration-700 md:text-lg">
-            I provide full-stack web development services using modern
-            technologies like React.js, Node.js, Express, and MongoDB. From
-            building responsive UIs to creating secure APIs and deploying
-            scalable applications, I help turn ideas into real,
-            production-ready products.
-          </p>
+          <div className="mt-2 grid w-full grid-cols-1 gap-3 sm:grid-cols-2">
+            {serviceCards.map((service, i) => (
+              <div
+                key={service.title}
+                className="group relative flex animate-in fade-in slide-in-from-bottom-2 flex-col items-center justify-center gap-2 rounded-2xl border border-border bg-gradient-to-br from-card to-muted p-4 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_10px_30px_rgba(37,99,235,0.25)]"
+                style={{ animationDelay: `${150 + i * 100}ms` }}
+              >
+                {/* Ambient glow revealed on hover */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-tr from-primary via-accent to-secondary opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-30"
+                />
+
+                {/* Icon badge */}
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white shadow-sm ring-1 ring-white/20 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+                  <service.Icon className="h-4 w-4" />
+                </span>
+
+                <h5 className="text-sm font-semibold text-foreground">
+                  {service.title}
+                </h5>
+              </div>
+            ))}
+          </div>
         </aside>
 
-        <figure className="float-anime flex h-[60%] items-center justify-center sm:h-full sm:w-[50%]">
+        {/* p-8 reserves space for the magic balls, which orbit ~2rem beyond
+            the ring; without it the balls overflow into the gap inconsistently */}
+        <figure className="float-anime flex w-full items-center justify-center p-8 sm:w-auto sm:shrink-0">
           <div className="service-ring relative flex h-60 w-60 items-center justify-center rounded-full border border-secondary sm:h-70 sm:w-70 md:h-90 md:w-90">
             <MagicBall
               title="API"

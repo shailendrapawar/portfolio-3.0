@@ -210,5 +210,11 @@
     }
   html {
     @apply font-sans;
+    /* Hide the root scrollbar while keeping scroll behavior */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE / legacy Edge */
+    }
+  html::-webkit-scrollbar {
+    display: none; /* Chrome / Safari / Edge */
     }
 }
