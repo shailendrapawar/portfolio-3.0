@@ -28,6 +28,7 @@ function Landing() {
           <h1 className="text-3xl text-secondary sm:text-5xl md:text-6xl">
             Full Stack Developer
           </h1>
+          
 
           <p className="w-[80%] text-sm text-muted-foreground sm:text-lg md:text-xl">
             MERN stack wizard , with a knack for real-time features, and seemless
@@ -50,6 +51,7 @@ function Landing() {
             </Link>
           </div>
         </main>
+
 
         <aside className="relative flex h-[50%] w-full items-center justify-center sm:h-full sm:w-[50%] sm:pr-10">
           <div className="relative flex h-60 w-50 items-center justify-center sm:h-80 sm:w-65 md:h-95 md:w-80">

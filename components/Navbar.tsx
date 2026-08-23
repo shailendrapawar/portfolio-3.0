@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { INavItem, navItems } from "../lib/navItems";
+import { INavItem, navItems } from "../lib/data/navItems";
 import { TbMenu3 } from "react-icons/tb";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,7 @@ export default function Navbar() {
 
 
   return (
-    <main className="h-20  w-full relative py-2">
+    <main className="h-20  w-full relative py-2 px-4 z-50">
       <section className="flex justify-between items-center gap-5 h-full rounded-full px-5 relative bg-primary text-primary-foreground">
       <h1>LOGO</h1>
       <nav className="hidden md:flex h-full items-center gap-5">

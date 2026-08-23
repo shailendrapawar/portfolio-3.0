@@ -22,9 +22,10 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
     >
-      <body className=" p-2 min-h-screen min-w-screen">
+      <body className="min-h-screen w-full h-full ">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
+
   )
 }

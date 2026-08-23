@@ -4,6 +4,10 @@ export const navItems: INavItem[] = [
     path: "/",
   },
   {
+    label: "Experience",
+    path: "/experience",
+  },
+  {
     label: "Projects",
     path: "/projects",
   },
