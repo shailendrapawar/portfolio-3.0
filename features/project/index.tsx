@@ -1,8 +1,12 @@
-import { projectItems } from "@/lib/data/projectItems";
+
+"use client"
 
 import ProjectList from "./components/ProjectList";
+import { useSearchProjects } from "./hooks/useSearchProjects";
 
 export default function Project() {
+    const{projects,isLoading,error}=useSearchProjects()
+  
   return (
     <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">
       <div className="flex flex-col items-center gap-2 text-center">
@@ -14,7 +18,9 @@ export default function Project() {
         </p>
       </div>
 
-      <ProjectList projects={projectItems} />
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
+        <ProjectList projects={projects} isLoading={isLoading} error={error || ""} />
+      {/* </Suspense> */}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { ENV } from "./env"
+import { ENV } from "../env"
 
 if (!ENV.db.uri) {
   throw new Error("MONGODB_URI is not defined")

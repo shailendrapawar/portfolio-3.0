@@ -1,12 +1,11 @@
-"use client";
+
 
 import { useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { type IProject } from "@/lib/data/projectItems";
 
 import ProjectCard from "./ProjectCard";
-
+import { IProject } from "../model";
 type Filter = "all" | "frontend" | "fullstack" | "app";
 
 const filters: { label: string; value: Filter }[] = [
@@ -16,7 +15,13 @@ const filters: { label: string; value: Filter }[] = [
   { label: "App", value: "app" },
 ];
 
-export default function ProjectList({ projects }: { projects: IProject[] }) {
+interface IProjectListProps {
+  projects: IProject[];
+  isLoading: boolean;
+  error: any | null;
+}
+
+export default function ProjectList({ projects, isLoading, error }:IProjectListProps) {
   const [active, setActive] = useState<Filter>("all");
 
   const visible = useMemo(
@@ -27,8 +32,17 @@ export default function ProjectList({ projects }: { projects: IProject[] }) {
     [active, projects]
   );
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error?.message||""}</div>;
+  }
+
+
   return (
-    <div className="flex w-full flex-col items-center gap-8">
+    <div className="flex h-[calc(100vh-40vh)] w-full flex-col items-center gap-8">
       <nav className="flex flex-wrap justify-center gap-1 rounded-full border border-border bg-muted p-1">
         {filters.map((filter) => (
           <button
