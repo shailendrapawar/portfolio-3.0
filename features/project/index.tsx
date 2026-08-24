@@ -19,7 +19,7 @@ export default function Project() {
       </div>
 
       {/* <Suspense fallback={<div>Loading...</div>}> */}
-        <ProjectList projects={projects} isLoading={isLoading} error={error || ""} />
+        <ProjectList projects={projects} isLoading={isLoading} error={error} />
       {/* </Suspense> */}
     </div>
   );

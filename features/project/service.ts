@@ -3,6 +3,7 @@ import { ICreateProjectPayload, ISearchProjectPayload, IUpdateProjectPayload } f
 import { IProject, ProjectModel } from "./model"
 import { connectDB } from "@/lib/db/db"
 import { DBRepository } from "@/lib/db/db.repository"
+import { ApiError } from "@/lib/api/error"
 
 type ProjectDocument = HydratedDocument<IProject>
 
@@ -18,7 +19,7 @@ export class ProjectService extends DBRepository {
   static async get(id: string) {
     await connectDB()
     if (!id) {
-      throw new Error("Project ID is required")
+      throw new ApiError(400, "Project ID is required")
     }
     const entity = await ProjectModel.findById(id)
     return entity
@@ -53,14 +54,14 @@ export class ProjectService extends DBRepository {
   static async update(id: string, payload: IUpdateProjectPayload) {
     await connectDB()
     if (!id) {
-      throw new Error("Project ID is required")
+      throw new ApiError(400, "Project ID is required")
     }
     const entity = await ProjectModel.findByIdAndUpdate(id, payload, {
       new: true,
       runValidators: true,
     })
     if (!entity) {
-      throw new Error("Project not found")
+      throw new ApiError(404, "Project not found")
     }
     return entity
   }

@@ -1,0 +1,109 @@
+﻿
+> portfolio-3.0@0.0.1 dev
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.29.158:3000
+- Environments: .env.local
+✓ Ready in 702ms
+node.exe : ⚠ The "middleware" file convention is 
+deprecated. Please use "proxy" instead. Learn 
+more: https://nextjs.org/docs/messages/middleware-
+to-proxy
+At C:\Program Files\nodejs\npm.ps1:29 char:3
++   & $NODE_EXE $NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (⚠ Th 
+   e "middlewa...leware-to-proxy:String) [], Rem  
+  oteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+ GET /auth 200 in 436ms (next.js: 232ms, proxy.ts: 3ms, application-code: 201ms)
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+ POST /api/auth/login 200 in 974ms (next.js: 660ms, application-code: 315ms)
+ GET /admin 200 in 92ms (next.js: 39ms, proxy.ts: 9ms, application-code: 44ms)
+ GET /projects 200 in 402ms (next.js: 40ms, application-code: 362ms)
+◇ injected env (0) from .env.local // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+ POST /api/project 401 in 144ms (next.js: 128ms, application-code: 17ms)
+count 1
+items [
+  {
+    _id: new ObjectId('6a8c96734df995a585c83d20'),
+    title: 'Test Project (updated)',
+    description: 'A project created via API test',
+    img: 'https://example.com/img.png',
+    skills: 'React, Next.js',
+    category: 'frontend',
+    live: 'https://example.com',
+    github: 'https://github.com/test/repo',
+    isFeatured: true,
+    status: 'active',
+    __v: 0
+  }
+]
+ GET /api/project 200 in 21ms (next.js: 4ms, application-code: 17ms)
+ POST /api/auth/login 200 in 273ms (next.js: 23ms, application-code: 250ms)
+ POST /api/project 201 in 34ms (next.js: 3ms, application-code: 31ms)
+◇ injected env (0) from .env.local // tip: ⌘ suppress logs { quiet: true }
+ PATCH /api/project/6a8ca1175e0058f7fd9c7c6a 401 in 1542ms (next.js: 1510ms, application-code: 32ms)
+(node:28448) [MONGOOSE] Warning: mongoose: the 
+`new` option for `findOneAndUpdate()` and 
+`findOneAndReplace()` is deprecated. Use 
+`returnDocument: 'after'` instead.
+(Use `node --trace-warnings ...` to show where 
+the warning was created)
+ PATCH /api/project/6a8ca1175e0058f7fd9c7c6a 200 in 32ms (next.js: 12ms, application-code: 19ms)
+◇ injected env (0) from .env.local // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env.local // tip: ⌁ auth for agents [www.vestauth.com]
+ POST /api/auth/login 401 in 80ms (next.js: 60ms, application-code: 20ms)
+ POST /api/auth/login 400 in 12ms (next.js: 3ms, application-code: 8ms)
+ POST /api/auth/login 200 in 242ms (next.js: 3ms, application-code: 240ms)
+◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]
+count 2
+items [
+  {
+    _id: new ObjectId('6a8c96734df995a585c83d20'),
+    title: 'Test Project (updated)',
+    description: 'A project created via API test',
+    img: 'https://example.com/img.png',
+    skills: 'React, Next.js',
+    category: 'frontend',
+    live: 'https://example.com',
+    github: 'https://github.com/test/repo',
+    isFeatured: true,
+    status: 'active',
+    __v: 0
+  },
+  {
+    _id: new ObjectId('6a8ca1175e0058f7fd9c7c6a'),
+    title: 'Guard Test Updated',
+    description: 'x',
+    img: 'https://e.com/i.png',
+    skills: 'react',
+    category: 'frontend',
+    github: 'https://github.com/a/b',
+    isFeatured: false,
+    status: 'active',
+    __v: 0
+  }
+]
+ GET /api/project?status=active 200 in 95ms (next.js: 77ms, application-code: 18ms)
+ POST /api/project 401 in 20ms (next.js: 4ms, application-code: 17ms)
+ POST /api/project 201 in 20ms (next.js: 3ms, application-code: 17ms)
+◇ injected env (0) from .env.local // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+ GET /api/project/6a8ca2925e0058f7fd9c7c6b 200 in 97ms (next.js: 85ms, application-code: 12ms)
+ GET /api/project/000000000000000000000000 404 in 12ms (next.js: 3ms, application-code: 9ms)
+(node:28448) [MONGOOSE] Warning: mongoose: the 
+`new` option for `findOneAndUpdate()` and 
+`findOneAndReplace()` is deprecated. Use 
+`returnDocument: 'after'` instead.
+ PATCH /api/project/6a8ca2925e0058f7fd9c7c6b 200 in 19ms (next.js: 4ms, application-code: 15ms)
+(node:28448) [MONGOOSE] Warning: mongoose: the 
+`new` option for `findOneAndUpdate()` and 
+`findOneAndReplace()` is deprecated. Use 
+`returnDocument: 'after'` instead.
+ PATCH /api/project/000000000000000000000000 404 in 25ms (next.js: 3ms, application-code: 22ms)
+ POST /api/auth/logout 200 in 44ms (next.js: 36ms, application-code: 9ms)
+◇ injected env (0) from .env.local // tip: ◈ secrets for agents [www.dotenvx.com]

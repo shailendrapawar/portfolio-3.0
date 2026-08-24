@@ -18,7 +18,7 @@ const filters: { label: string; value: Filter }[] = [
 interface IProjectListProps {
   projects: IProject[];
   isLoading: boolean;
-  error: any | null;
+  error: string | null;
 }
 
 export default function ProjectList({ projects, isLoading, error }:IProjectListProps) {
@@ -37,7 +37,7 @@ export default function ProjectList({ projects, isLoading, error }:IProjectListP
   }
 
   if (error) {
-    return <div>Error: {error?.message||""}</div>;
+    return <div>Error: {error}</div>;
   }
 
 

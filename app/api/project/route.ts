@@ -1,33 +1,45 @@
 import { ProjectService } from "@/features/project/service"
 import { createProjectPayload, searchProjectPayload } from "@/features/project/validators"
-import { NextResponse } from "next/server"
+import { requireAuth } from "@/lib/auth/guard"
+import { sendResponse, handleError } from "@/lib/api/response"
 
 export async function GET(request: Request) {
-  const url = new URL(request.url)
+  try {
+    const url = new URL(request.url)
 
-  const parsed = searchProjectPayload.safeParse({
-    category: url.searchParams.get("category") || undefined,
-    status: url.searchParams.get("status") || undefined,
-  })
+    const parsed = searchProjectPayload.safeParse({
+      category: url.searchParams.get("category") || undefined,
+      status: url.searchParams.get("status") || undefined,
+    })
 
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
+    if (!parsed.success) {
+      return sendResponse(400, "Validation failed", parsed.error.flatten())
+    }
+
+    const { count, items } = await ProjectService.search(parsed.data)
+
+    return sendResponse(200, "Projects fetched successfully", { items, count })
+  } catch (error) {
+    return handleError(error)
   }
-
-  const { count, items } = await ProjectService.search(parsed.data)
-
-  return NextResponse.json({ items, count })
 }
 
 export async function POST(request: Request) {
-  const body = await request.json().catch(() => null)
+  try {
+    const auth = await requireAuth()
+    if (!auth.authorized) return auth.response
 
-  const parsed = createProjectPayload.safeParse(body)
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 })
+    const body = await request.json().catch(() => null)
+
+    const parsed = createProjectPayload.safeParse(body)
+    if (!parsed.success) {
+      return sendResponse(400, "Validation failed", parsed.error.flatten())
+    }
+
+    const item = await ProjectService.create(parsed.data)
+
+    return sendResponse(201, "Project created successfully", { item })
+  } catch (error) {
+    return handleError(error)
   }
-
-  const item = await ProjectService.create(parsed.data)
-
-  return NextResponse.json({ item }, { status: 201 })
 }
