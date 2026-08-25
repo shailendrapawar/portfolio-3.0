@@ -27,12 +27,18 @@ function ProjectCard({ data }: { data: IProject }) {
     ? data.skills.split(",").filter(Boolean).length
     : 0;
 
+  // `img` is now an object ({ url, id }); tolerate the legacy string shape too.
+  const DEFAULT_IMG =
+    "https://res.cloudinary.com/soty762i/image/upload/v1787680320/defualt-project-img.jpg";
+  const imgSrc =
+    (typeof data.img === "string" ? data.img : data.img?.url) || DEFAULT_IMG;
+
   return (
     <div className="group relative aspect-[3/4] w-full max-w-[340px] overflow-hidden rounded-2xl border border-border bg-card">
       {/* Background image */}
       <div className="absolute inset-0 overflow-hidden">
         <Image
-          src={data.img}
+          src={imgSrc}
           alt={data.title}
           fill
           sizes="(max-width: 640px) 100vw, 340px"

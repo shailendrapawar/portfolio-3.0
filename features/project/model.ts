@@ -11,8 +11,11 @@ const projectSchema = new Schema({
     required: true,
   },
   img: {
-    type: String,
-    required: true,
+    url: {
+      type: String,
+      default: "https://res.cloudinary.com/soty762i/image/upload/v1787680320/defualt-project-img.jpg",
+    },
+    id: { type: String },
   },
   skills: {
     type: String,
@@ -37,7 +40,7 @@ const projectSchema = new Schema({
   },
   status: {
     type: String,
-    enum: Object.values(PROJECT_STATUS),  
+    enum: Object.values(PROJECT_STATUS),
     required: true,
   },
 })

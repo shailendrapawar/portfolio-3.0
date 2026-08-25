@@ -1,9 +1,15 @@
 import { z } from "zod"
 
+export const projectImagePayload = z.object({
+  url: z.string(),
+  id: z.string().optional(),
+})
+export type IProjectImagePayload = z.infer<typeof projectImagePayload>
+
 export const createProjectPayload = z.object({
   title: z.string(),
   description: z.string(),
-  img: z.string(),
+  img: projectImagePayload,
   skills: z.string(),
   category: z.string(),
   live: z.string().optional(),
@@ -22,7 +28,7 @@ export type ISearchProjectPayload = z.infer<typeof searchProjectPayload>
 export const updateProjectPayload = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
-  img: z.string().optional(),
+  img: projectImagePayload.optional(),
   skills: z.string().optional(),
   category: z.string().optional(),
   live: z.string().optional(),
