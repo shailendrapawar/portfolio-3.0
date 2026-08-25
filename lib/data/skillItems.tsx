@@ -149,15 +149,6 @@ export const databaseSkills: ISkills = [
     defaultIcon: "skill-icons:mongodb"
   },
   {
-    name: "MySQL",
-    code: "mysql",
-    category: "database",
-    level: 60,
-    lightIcon: "skill-icons:mysql-light",
-    darkIcon: "skill-icons:mysql-dark",
-    defaultIcon: "skill-icons:mysql-dark"
-  },
-  {
     name: "PostgreSQL",
     code: "postgresql",
     category: "database",
