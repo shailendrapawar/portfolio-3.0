@@ -1,13 +1,14 @@
-"use client";
-
 import Link from "next/link";
 
+import { WorkExperienceService } from "../service";
+import type { IWorkExperience } from "../model";
 import ExperienceTimeline from "./ExperienceTimeline";
-import { useSearchExperience } from "../hooks/useSearchExperience";
 import { toTimelineItems } from "../adapters";
 
-export default function LatestExperience() {
-  const { experiences, isLoading, error } = useSearchExperience();
+export default async function LatestExperience() {
+  // Fetched server-side so the home page can be statically cached (ISR).
+  const { items } = await WorkExperienceService.search();
+  const experiences = JSON.parse(JSON.stringify(items)) as IWorkExperience[];
 
   // API returns entries sorted by start date descending; take the latest two.
   const latest = toTimelineItems(experiences).slice(0, 2);
@@ -22,15 +23,6 @@ export default function LatestExperience() {
           Where I&apos;ve been working recently.
         </p>
       </div>
-
-      {isLoading && (
-        <p className="text-sm text-muted-foreground">Loading experience…</p>
-      )}
-      {error && (
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
-      )}
 
       <ExperienceTimeline items={latest} />
 

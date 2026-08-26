@@ -1,13 +1,14 @@
-"use client";
-
 import Link from "next/link";
 
+import { ProjectService } from "../service";
+import type { IProject } from "../model";
 import ProjectCard from "./ProjectCard";
-import { useSearchProjects } from "../hooks/useSearchProjects";
 
-export default function FeaturedProjects() {
-  // Fetch only the featured projects from the API.
-  const { projects: featured, isLoading, error } = useSearchProjects("isFeatured=true");
+export default async function FeaturedProjects() {
+  // Fetched server-side so the home page can be statically cached (ISR).
+  const { items } = await ProjectService.search({ isFeatured: true });
+  // Mongoose docs aren't serializable across the server→client boundary.
+  const featured = JSON.parse(JSON.stringify(items)) as IProject[];
 
   return (
     <section className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">
@@ -19,15 +20,6 @@ export default function FeaturedProjects() {
           A selection of things I&apos;ve built.
         </p>
       </div>
-
-      {isLoading && (
-        <p className="text-sm text-muted-foreground">Loading projects…</p>
-      )}
-      {error && (
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
-      )}
 
       <div className="flex w-full flex-wrap justify-center gap-6 animate-in fade-in duration-500">
         {featured.map((project) => (
