@@ -4,6 +4,7 @@ import { IProject, ProjectModel } from "./model"
 import { connectDB } from "@/lib/db/db"
 import { DBRepository } from "@/lib/db/db.repository"
 import { ApiError } from "@/lib/api/error"
+import { cloudinaryService } from "@/lib/cloudinary"
 
 type ProjectDocument = HydratedDocument<IProject>
 
@@ -51,7 +52,15 @@ export class ProjectService extends DBRepository {
     if (payload?.title !== undefined) entity.title = payload.title
     if (payload?.description !== undefined) entity.description = payload.description
     if (payload?.img !== undefined) entity.img = payload.img
-    if (payload?.skills !== undefined) entity.skills = payload.skills
+    // Skills are stored as an array of strings; tolerate a comma-separated string too.
+    if (payload?.skills !== undefined) {
+      entity.skills = Array.isArray(payload.skills)
+        ? payload.skills
+        : String(payload.skills)
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean)
+    }
     if (payload?.category !== undefined) entity.category = payload.category
     if (payload?.live !== undefined) entity.live = payload.live
     if (payload?.github !== undefined) entity.github = payload.github
@@ -79,6 +88,26 @@ export class ProjectService extends DBRepository {
     }
     this.set(payload, entity)
     await entity.save()
+    return entity
+  }
+
+  // Permanently deletes a project: first removes its Cloudinary asset (from
+  // img.id), then deletes the document itself. Irreversible.
+  static async remove(id: string) {
+    await connectDB()
+    if (!id) {
+      throw new ApiError(400, "Project ID is required")
+    }
+    const entity = await ProjectModel.findById(id)
+    if (!entity) {
+      throw new ApiError(404, "Project not found")
+    }
+
+    if (entity.img?.id) {
+      await cloudinaryService.delete(entity.img.id)
+    }
+
+    await entity.deleteOne()
     return entity
   }
 }

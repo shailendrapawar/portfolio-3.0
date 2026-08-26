@@ -1,12 +1,16 @@
 "use client"
 
-import { Pencil, Plus } from "lucide-react"
+import Image from "next/image"
+import { Pencil, Plus, Trash2 } from "lucide-react"
 
 import Modal from "@/components/Modal"
 import { Button } from "@/components/ui/button"
 
 import { useProjectManager } from "../hooks/useProjectManager"
 import ProjectForm from "./ProjectForm"
+
+const DEFAULT_IMG =
+  "https://res.cloudinary.com/soty762i/image/upload/v1787680320/defualt-project-img.jpg"
 
 export default function ProjectManager() {
   const {
@@ -19,6 +23,12 @@ export default function ProjectManager() {
     openCreate,
     openEdit,
     handleSuccess,
+    deleteTarget,
+    deleting,
+    deleteError,
+    requestDelete,
+    cancelDelete,
+    confirmDelete,
   } = useProjectManager()
 
   return (
@@ -46,18 +56,47 @@ export default function ProjectManager() {
         {projects.map((project) => (
           <li
             key={project._id}
-            className="flex items-center justify-between rounded-xl border border-border bg-card p-3"
+            className="flex items-center gap-3 rounded-xl border border-border bg-card p-2 sm:p-3"
           >
-            <div className="flex flex-col">
-              <span className="font-medium text-foreground">{project.title}</span>
-              <span className="text-xs text-muted-foreground">
+            <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-border bg-muted sm:h-14 sm:w-14">
+              <Image
+                src={project.img?.url || DEFAULT_IMG}
+                alt={project.title}
+                fill
+                sizes="56px"
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+
+            <div className="flex min-w-0 flex-col">
+              <span className="truncate text-sm font-medium text-foreground sm:text-base">
+                {project.title}
+              </span>
+              <span className="truncate text-[11px] text-muted-foreground sm:text-xs">
                 {project.category} · {project.status}
                 {project.isFeatured ? " · featured" : ""}
               </span>
             </div>
-            <Button variant="ghost" size="icon-sm" onClick={() => openEdit(project)}>
-              <Pencil className="size-4" />
-            </Button>
+
+            <div className="ml-auto flex shrink-0 items-center gap-1">
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => openEdit(project)}
+              >
+                <Pencil className="size-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                className="text-destructive hover:text-destructive"
+                onClick={() => requestDelete(project)}
+                aria-label={`Delete ${project.title}`}
+              >
+                <Trash2 className="size-4" />
+              </Button>
+            </div>
           </li>
         ))}
       </ul>
@@ -76,6 +115,34 @@ export default function ProjectManager() {
           project={editing}
           onSuccess={handleSuccess}
         />
+      </Modal>
+
+      <Modal
+        open={Boolean(deleteTarget)}
+        onOpenChange={(open) => {
+          if (!open) cancelDelete()
+        }}
+        title="Delete project"
+        description="This permanently deletes the project and its image. This can't be undone."
+      >
+        <p className="text-sm text-foreground">
+          Delete <span className="font-medium">{deleteTarget?.title}</span>?
+        </p>
+
+        {deleteError && (
+          <p className="text-sm text-destructive" role="alert">
+            {deleteError}
+          </p>
+        )}
+
+        <div className="mt-1 flex justify-end gap-2">
+          <Button variant="ghost" onClick={cancelDelete} disabled={deleting}>
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={confirmDelete} disabled={deleting}>
+            {deleting ? "Deleting…" : "Delete"}
+          </Button>
+        </div>
       </Modal>
     </div>
   )

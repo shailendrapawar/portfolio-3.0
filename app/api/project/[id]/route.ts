@@ -40,3 +40,18 @@ export async function PATCH(request: Request, { params }: RouteContext) {
     return handleError(error)
   }
 }
+
+export async function DELETE(_request: Request, { params }: RouteContext) {
+  try {
+    const auth = await requireAuth()
+    if (!auth.authorized) return auth.response
+
+    const { id } = await params
+
+    const item = await ProjectService.remove(id)
+
+    return sendResponse(200, "Project deleted permanently", { item })
+  } catch (error) {
+    return handleError(error)
+  }
+}

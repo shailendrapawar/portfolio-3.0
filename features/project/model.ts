@@ -18,7 +18,7 @@ const projectSchema = new Schema({
     id: { type: String },
   },
   skills: {
-    type: String,
+    type: [String],
     required: true,
   },
   category: {

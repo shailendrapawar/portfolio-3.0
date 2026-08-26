@@ -17,15 +17,23 @@ function ProjectCard({ data }: { data: IProject }) {
   // the light badge until the resolved theme is available.
   useEffect(() => setMounted(true), []);
 
+  // `skills` is now a string[]; tolerate the legacy comma-separated string too.
+  const skillList = Array.isArray(data.skills)
+    ? data.skills
+    : data.skills
+      ? String(data.skills).split(",")
+      : [];
+
+  // skillicons expects a comma-separated list, so join the array back for the URL.
+  const skillsParam = skillList.filter(Boolean).join(",");
+
   const skillSrc = useMemo(() => {
     const theme = mounted && resolvedTheme === "dark" ? "dark" : "light";
-    return `https://skillicons.dev/icons?i=${data.skills ?? ""}&theme=${theme}`;
-  }, [data.skills, mounted, resolvedTheme]);
+    return `https://skillicons.dev/icons?i=${skillsParam}&theme=${theme}`;
+  }, [skillsParam, mounted, resolvedTheme]);
 
   // skillicons renders each icon at ~48px square; size the width to the count.
-  const skillCount = data.skills
-    ? data.skills.split(",").filter(Boolean).length
-    : 0;
+  const skillCount = skillsParam ? skillsParam.split(",").length : 0;
 
   // `img` is now an object ({ url, id }); tolerate the legacy string shape too.
   const DEFAULT_IMG =
@@ -87,7 +95,7 @@ function ProjectCard({ data }: { data: IProject }) {
           {data.description}
         </p>
 
-        {data.skills && (
+        {skillCount > 0 && (
           <div className="flex justify-start">
             <Image
               key={skillSrc}

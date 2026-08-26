@@ -12,12 +12,19 @@ export const ENV = {
   },
   auth: {
     saltRounds: process.env.AUTH_SALT_ROUNDS || 10,
+    // Secrets have no in-source defaults — set them in .env.local.
     secret: process.env.AUTH_SECRET || "",
 
     seedAdmin: {
-      name: process.env.SEED_ADMIN_NAME || "shailendra pawar",
-      email: process.env.SEED_ADMIN_EMAIL || "shailendrapawar.dev@gmail.com",
-      password: process.env.SEED_ADMIN_PASSWORD || "uk04ac2006",
+      name: process.env.SEED_ADMIN_NAME || "",
+      email: process.env.SEED_ADMIN_EMAIL || "",
+      password: process.env.SEED_ADMIN_PASSWORD || "",
     },
+  },
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
+    apiKey: process.env.CLOUDINARY_API_KEY || "",
+    apiSecret: process.env.CLOUDINARY_API_SECRET || "",
+    folder: process.env.CLOUDINARY_FOLDER || "portfolio",
   },
 }

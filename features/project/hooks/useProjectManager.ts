@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { useSearchProjects } from "./useSearchProjects"
+import { useDeleteProject } from "./useDeleteProject"
 import type { ProjectWithId } from "./useProjectForm"
 
 /**
@@ -13,6 +14,18 @@ export function useProjectManager() {
 
   const [isOpen, setIsOpen] = useState(false)
   const [editing, setEditing] = useState<ProjectWithId | null>(null)
+
+  // The project pending permanent deletion (drives the confirm modal).
+  const [deleteTarget, setDeleteTarget] = useState<ProjectWithId | null>(null)
+
+  const {
+    deleteProject,
+    deleting,
+    error: deleteError,
+  } = useDeleteProject(() => {
+    setDeleteTarget(null)
+    searchProjects()
+  })
 
   const openCreate = () => {
     setEditing(null)
@@ -30,6 +43,12 @@ export function useProjectManager() {
     searchProjects()
   }
 
+  const requestDelete = (project: ProjectWithId) => setDeleteTarget(project)
+  const cancelDelete = () => setDeleteTarget(null)
+  const confirmDelete = async () => {
+    if (deleteTarget?._id) await deleteProject(deleteTarget._id)
+  }
+
   return {
     projects: projects as ProjectWithId[],
     isLoading,
@@ -40,5 +59,11 @@ export function useProjectManager() {
     openCreate,
     openEdit,
     handleSuccess,
+    deleteTarget,
+    deleting,
+    deleteError,
+    requestDelete,
+    cancelDelete,
+    confirmDelete,
   }
 }

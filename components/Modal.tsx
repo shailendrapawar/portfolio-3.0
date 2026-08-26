@@ -39,19 +39,19 @@ export default function Modal({
 
         <Dialog.Popup
           className={cn(
-            "fixed top-1/2 left-1/2 z-50 flex w-full max-w-md -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-lg outline-none transition-all data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0",
+            "fixed top-1/2 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 flex-col gap-2.5 rounded-xl border border-border bg-card p-4 shadow-lg outline-none transition-all data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 sm:gap-3 sm:rounded-2xl sm:p-5",
             className
           )}
         >
           {(title || description) && (
             <div className="flex flex-col gap-1 pr-6">
               {title && (
-                <Dialog.Title className="text-lg font-semibold text-foreground">
+                <Dialog.Title className="text-sm font-semibold text-foreground sm:text-base">
                   {title}
                 </Dialog.Title>
               )}
               {description && (
-                <Dialog.Description className="text-sm text-muted-foreground">
+                <Dialog.Description className="text-[11px] text-muted-foreground sm:text-xs">
                   {description}
                 </Dialog.Description>
               )}
@@ -59,7 +59,7 @@ export default function Modal({
           )}
 
           <Dialog.Close
-            className="absolute top-4 right-4 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            className="absolute top-3 right-3 rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:top-4 sm:right-4"
             aria-label="Close"
           >
             <X className="size-4" />

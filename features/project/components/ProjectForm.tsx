@@ -1,136 +1,198 @@
 "use client"
 
+import Image from "next/image"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
 import { PROJECT_CATEGORY, PROJECT_STATUS } from "../constant"
 import { useProjectForm, type ProjectWithId } from "../hooks/useProjectForm"
+import SkillsInput from "./SkillsInput"
 
 type ProjectFormProps = {
   project?: ProjectWithId | null
   onSuccess?: () => void
 }
 
-const selectClass =
-  "h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
+const labelClass = "text-xs"
+const inputClass = "h-7 text-xs"
+const selectTriggerClass = "h-7 w-full text-xs"
 
 export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
-  const { values, setField, error, loading, isEditing, handleSubmit } = useProjectForm({
-    project,
-    onSuccess,
-  })
+  const {
+    values,
+    setField,
+    error,
+    loading,
+    isEditing,
+    handleSubmit,
+    handleImageChange,
+    uploading,
+    imageError,
+  } = useProjectForm({ project, onSuccess })
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="title">Title</Label>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="title" className={labelClass}>
+          Title
+        </Label>
         <Input
           id="title"
           required
           disabled={loading}
+          className={inputClass}
           value={values.title}
           onChange={(e) => setField("title", e.target.value)}
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="description">Description</Label>
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="description" className={labelClass}>
+          Description
+        </Label>
         <Input
           id="description"
           required
           disabled={loading}
+          className={inputClass}
           value={values.description}
           onChange={(e) => setField("description", e.target.value)}
         />
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="img">Image URL</Label>
-        <Input
-          id="img"
-          disabled={loading}
-          placeholder="Leave blank to use the default image"
-          value={values.img.url}
-          onChange={(e) => setField("img", { ...values.img, url: e.target.value })}
-        />
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="img" className={labelClass}>
+          Image
+        </Label>
+        <div className="flex items-center gap-3">
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+            {values.img.url && (
+              <Image
+                src={values.img.url}
+                alt="preview"
+                fill
+                sizes="48px"
+                className="object-cover"
+                unoptimized
+              />
+            )}
+          </div>
+          <input
+            id="img"
+            type="file"
+            accept="image/*"
+            disabled={loading || uploading}
+            onChange={handleImageChange}
+            className="min-w-0 flex-1 text-xs text-muted-foreground file:mr-2 file:rounded-md file:border-0 file:bg-muted file:px-2 file:py-1 file:text-xs file:font-medium file:text-foreground disabled:opacity-50"
+          />
+        </div>
+        {uploading && (
+          <span className="text-[11px] text-muted-foreground">Uploading…</span>
+        )}
+        {imageError && <span className="text-[11px] text-destructive">{imageError}</span>}
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="skills">Skills</Label>
-        <Input
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="skills" className={labelClass}>
+          Skills
+        </Label>
+        <SkillsInput
           id="skills"
-          required
           disabled={loading}
           value={values.skills}
-          onChange={(e) => setField("skills", e.target.value)}
+          onChange={(v) => setField("skills", v)}
         />
       </div>
 
-      <div className="flex gap-4">
-        <div className="flex flex-1 flex-col gap-2">
-          <Label htmlFor="category">Category</Label>
-          <select
-            id="category"
-            className={selectClass}
-            disabled={loading}
+      <div className="flex gap-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <Label htmlFor="category" className={labelClass}>
+            Category
+          </Label>
+          <Select
             value={values.category}
-            onChange={(e) => setField("category", e.target.value)}
-          >
-            {Object.values(PROJECT_CATEGORY).map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex flex-1 flex-col gap-2">
-          <Label htmlFor="status">Status</Label>
-          <select
-            id="status"
-            className={selectClass}
+            onValueChange={(v) => setField("category", v as string)}
             disabled={loading}
-            value={values.status}
-            onChange={(e) =>
-              setField("status", e.target.value as typeof values.status)
-            }
           >
-            {Object.values(PROJECT_STATUS).map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger id="category" size="sm" className={selectTriggerClass}>
+              <SelectValue className="capitalize" placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(PROJECT_CATEGORY).map((c) => (
+                <SelectItem key={c} value={c} className="text-xs capitalize">
+                  {c}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <Label htmlFor="status" className={labelClass}>
+            Status
+          </Label>
+          <Select
+            value={values.status}
+            onValueChange={(v) => setField("status", v as typeof values.status)}
+            disabled={loading}
+          >
+            <SelectTrigger id="status" size="sm" className={selectTriggerClass}>
+              <SelectValue className="capitalize" placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(PROJECT_STATUS).map((s) => (
+                <SelectItem key={s} value={s} className="text-xs capitalize">
+                  {s}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="github">GitHub URL</Label>
-        <Input
-          id="github"
-          required
-          disabled={loading}
-          value={values.github}
-          onChange={(e) => setField("github", e.target.value)}
-        />
+      <div className="flex gap-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <Label htmlFor="github" className={labelClass}>
+            GitHub URL
+          </Label>
+          <Input
+            id="github"
+            required
+            disabled={loading}
+            className={inputClass}
+            value={values.github}
+            onChange={(e) => setField("github", e.target.value)}
+          />
+        </div>
+
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <Label htmlFor="live" className={labelClass}>
+            Live URL (optional)
+          </Label>
+          <Input
+            id="live"
+            disabled={loading}
+            className={inputClass}
+            value={values.live ?? ""}
+            onChange={(e) => setField("live", e.target.value)}
+          />
+        </div>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="live">Live URL (optional)</Label>
-        <Input
-          id="live"
-          disabled={loading}
-          value={values.live ?? ""}
-          onChange={(e) => setField("live", e.target.value)}
-        />
-      </div>
-
-      <label className="flex items-center gap-2 text-sm">
+      <label className="flex items-center gap-2 text-xs">
         <input
           type="checkbox"
-          className={cn("size-4 rounded border-input")}
+          className={cn("size-3.5 rounded border-input")}
           disabled={loading}
           checked={values.isFeatured}
           onChange={(e) => setField("isFeatured", e.target.checked)}
@@ -139,17 +201,18 @@ export default function ProjectForm({ project, onSuccess }: ProjectFormProps) {
       </label>
 
       {error && (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-xs text-destructive" role="alert">
           {error}
         </p>
       )}
 
-      <Button type="submit" className="mt-2 w-full" disabled={loading}>
-        {loading
-          ? "Saving…"
-          : isEditing
-            ? "Update project"
-            : "Create project"}
+      <Button
+        type="submit"
+        size="sm"
+        className="mt-1 w-full"
+        disabled={loading || uploading}
+      >
+        {loading ? "Saving…" : isEditing ? "Update project" : "Create project"}
       </Button>
     </form>
   )
