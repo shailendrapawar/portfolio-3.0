@@ -1,23 +1,30 @@
+import { type RenderedEmail } from "./shared"
 import {
   contactTemplate,
   CONTACT_TEMPLATE_KEY,
   type ContactTemplateData,
-  type RenderedEmail,
 } from "./contact-template"
+import {
+  contactAcknowledgementTemplate,
+  CONTACT_ACK_TEMPLATE_KEY,
+  type ContactAckTemplateData,
+} from "./contact-acknowledgement-template"
 
 export type { RenderedEmail }
-export { CONTACT_TEMPLATE_KEY }
+export { CONTACT_TEMPLATE_KEY, CONTACT_ACK_TEMPLATE_KEY }
 
 // Registry of every email template, keyed by its templateKey. Add new
 // templates here and extend `EmailTemplateData` with their data shape.
 const templates = {
   [CONTACT_TEMPLATE_KEY]: contactTemplate,
+  [CONTACT_ACK_TEMPLATE_KEY]: contactAcknowledgementTemplate,
 }
 
 // Maps each templateKey to the data its template expects, so callers get a
 // type error if they pass the wrong shape for a given key.
 export type EmailTemplateData = {
   [CONTACT_TEMPLATE_KEY]: ContactTemplateData
+  [CONTACT_ACK_TEMPLATE_KEY]: ContactAckTemplateData
 }
 
 export type EmailTemplateKey = keyof typeof templates
