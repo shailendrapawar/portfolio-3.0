@@ -21,6 +21,9 @@ export const ENV = {
       password: process.env.SEED_ADMIN_PASSWORD || "",
     },
   },
+  cron: {
+    secret: process.env.CRON_SECRET || "",
+  },
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
     apiKey: process.env.CLOUDINARY_API_KEY || "",

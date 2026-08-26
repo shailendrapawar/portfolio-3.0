@@ -1,7 +1,8 @@
 import { requireAuth } from "@/lib/auth/guard"
 import { sendResponse, handleError } from "@/lib/api/response"
 import { ApiError } from "@/lib/api/error"
-import { cloudinaryService } from "@/lib/cloudinary"
+import { cloudinaryService } from "@/lib/providers/cloudinary"
+import { UploadService } from "@/features/upload/service"
 
 export const runtime = "nodejs"
 
@@ -27,6 +28,9 @@ export async function POST(request: Request) {
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const image = await cloudinaryService.upload(buffer)
+
+    // Track the asset as "pending" until a project claims it on create.
+    await UploadService.create(image)
 
     return sendResponse(200, "Image uploaded successfully", { image })
   } catch (error) {

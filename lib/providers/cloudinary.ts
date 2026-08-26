@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary"
 
-import { ENV } from "./env"
+import { ENV } from "../env"
 
 export type UploadedImage = { url: string; id: string }
 

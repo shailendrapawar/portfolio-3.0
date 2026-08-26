@@ -4,7 +4,8 @@ import { IProject, ProjectModel } from "./model"
 import { connectDB } from "@/lib/db/db"
 import { DBRepository } from "@/lib/db/db.repository"
 import { ApiError } from "@/lib/api/error"
-import { cloudinaryService } from "@/lib/cloudinary"
+import { cloudinaryService } from "@/lib/providers/cloudinary"
+import { UploadService } from "@/features/upload/service"
 
 type ProjectDocument = HydratedDocument<IProject>
 
@@ -74,6 +75,12 @@ export class ProjectService extends DBRepository {
     const entity = new ProjectModel()
     this.set(payload, entity)
     await entity.save()
+
+    // Claim the uploaded asset: flip its Upload record from "pending" to "active".
+    if (entity.img?.id) {
+      await UploadService.activate(entity.img.id)
+    }
+
     return entity
   }
 
