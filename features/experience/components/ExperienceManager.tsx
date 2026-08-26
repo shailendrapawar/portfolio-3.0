@@ -1,9 +1,18 @@
 "use client"
 
-import { Pencil, Plus, Trash2 } from "lucide-react"
+import { Pencil, Plus, Search, Trash2 } from "lucide-react"
 
 import Modal from "@/components/Modal"
+import Pagination from "@/components/Pagination"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 import { useExperienceManager } from "../hooks/useExperienceManager"
 import ExperienceForm from "./ExperienceForm"
@@ -20,8 +29,13 @@ function formatDate(value?: string | Date | null) {
 export default function ExperienceManager() {
   const {
     experiences,
+    pagination,
     isLoading,
     error,
+    search,
+    setSearch,
+    status,
+    setStatus,
     isOpen,
     setIsOpen,
     editing,
@@ -46,6 +60,36 @@ export default function ExperienceManager() {
         </Button>
       </div>
 
+      <div className="flex flex-row items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search experience…"
+            className="pl-8"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        <Select value={status} onValueChange={(v) => setStatus(v ?? "all")}>
+          <SelectTrigger className="w-28 shrink-0 sm:w-44">
+            <SelectValue className="capitalize" placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all" className="capitalize">
+              All
+            </SelectItem>
+            <SelectItem value="current" className="capitalize">
+              Current
+            </SelectItem>
+            <SelectItem value="past" className="capitalize">
+              Past
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
       {error && (
         <p className="text-sm text-destructive" role="alert">
@@ -54,7 +98,11 @@ export default function ExperienceManager() {
       )}
 
       {!isLoading && !error && experiences.length === 0 && (
-        <p className="text-sm text-muted-foreground">No work experience yet.</p>
+        <p className="text-sm text-muted-foreground">
+          {search || status !== "all"
+            ? "No work experience matches your filters."
+            : "No work experience yet."}
+        </p>
       )}
 
       <ul className="flex flex-col gap-2">
@@ -91,6 +139,8 @@ export default function ExperienceManager() {
           </li>
         ))}
       </ul>
+
+      {!isLoading && !error && <Pagination {...pagination} />}
 
       <Modal
         open={isOpen}

@@ -4,7 +4,7 @@ import ProjectList from "./components/ProjectList";
 import { useSearchProjects } from "./hooks/useSearchProjects";
 
 export default function Project() {
-    const{projects,isLoading,error}=useSearchProjects()
+    const{projects,isLoading,error}=useSearchProjects("")
 
   return (
     <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">

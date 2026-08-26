@@ -1,11 +1,21 @@
 "use client"
 
 import Image from "next/image"
-import { Pencil, Plus, Trash2 } from "lucide-react"
+import { Pencil, Plus, Search, Trash2 } from "lucide-react"
 
 import Modal from "@/components/Modal"
+import Pagination from "@/components/Pagination"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
+import { PROJECT_CATEGORY } from "../constant"
 import { useProjectManager } from "../hooks/useProjectManager"
 import ProjectForm from "./ProjectForm"
 
@@ -15,8 +25,13 @@ const DEFAULT_IMG =
 export default function ProjectManager() {
   const {
     projects,
+    pagination,
     isLoading,
     error,
+    search,
+    setSearch,
+    category,
+    setCategory,
     isOpen,
     setIsOpen,
     editing,
@@ -41,6 +56,35 @@ export default function ProjectManager() {
         </Button>
       </div>
 
+      <div className="flex flex-row items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search projects…"
+            className="pl-8"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        <Select value={category} onValueChange={(v) => setCategory(v ?? "all")}>
+          <SelectTrigger className="w-28 shrink-0 sm:w-44">
+            <SelectValue className="capitalize" placeholder="Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all" className="capitalize">
+              All categories
+            </SelectItem>
+            {Object.values(PROJECT_CATEGORY).map((c) => (
+              <SelectItem key={c} value={c} className="capitalize">
+                {c}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       {isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
       {error && (
         <p className="text-sm text-destructive" role="alert">
@@ -49,7 +93,11 @@ export default function ProjectManager() {
       )}
 
       {!isLoading && !error && projects.length === 0 && (
-        <p className="text-sm text-muted-foreground">No projects yet.</p>
+        <p className="text-sm text-muted-foreground">
+          {search || category !== "all"
+            ? "No projects match your filters."
+            : "No projects yet."}
+        </p>
       )}
 
       <ul className="flex flex-col gap-2">
@@ -100,6 +148,8 @@ export default function ProjectManager() {
           </li>
         ))}
       </ul>
+
+      {!isLoading && !error && <Pagination {...pagination} />}
 
       <Modal
         open={isOpen}

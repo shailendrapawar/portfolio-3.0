@@ -7,9 +7,13 @@ export async function GET(request: Request) {
   try {
     const url = new URL(request.url)
 
+    const isFeaturedParam = url.searchParams.get("isFeatured")
+
     const parsed = searchProjectPayload.safeParse({
       category: url.searchParams.get("category") || undefined,
       status: url.searchParams.get("status") || undefined,
+      // Only apply the filter when the param is explicitly true/false.
+      isFeatured: isFeaturedParam === null ? undefined : isFeaturedParam === "true",
     })
 
     if (!parsed.success) {

@@ -7,8 +7,6 @@ import Services from "./components/Services";
 import AboutMe from "./components/AboutMe";
 import FeaturedProjects from "../project/components/FeaturedProjects";
 import LatestExperience from "../experience/components/LatestExperience";
-import { projectItems } from "@/lib/data/projectItems";
-import { IProject } from "@/lib/data/projectItems";
 
 export default function Home() {
   return (
@@ -23,7 +21,7 @@ export default function Home() {
       <Spacer size={2.5} />
       <Services />
       <Spacer size={2.5} />
-      <FeaturedProjects projects={projectItems.filter((project:IProject)=>project.isFeatured==true)}/>
+      <FeaturedProjects />
     </div>
   );
 }

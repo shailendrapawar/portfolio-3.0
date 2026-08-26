@@ -10,7 +10,7 @@ export default function Experience() {
   const items = toTimelineItems(experiences);
 
   return (
-    <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">
+    <div className="mx-auto flex min-h-[calc(100vh-40vh)] w-full max-w-250 flex-col items-center gap-8 p-4">
       <div className="flex flex-col items-center gap-2 text-center">
         <h2 className="text-2xl font-semibold text-accent sm:text-3xl">
           Experience

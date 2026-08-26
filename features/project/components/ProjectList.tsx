@@ -42,7 +42,7 @@ export default function ProjectList({ projects, isLoading, error }:IProjectListP
 
 
   return (
-    <div className="flex h-[calc(100vh-40vh)] w-full flex-col items-center gap-8">
+    <div className="flex min-h-[calc(100vh-40vh)] w-full flex-col items-center gap-8">
       <nav className="flex flex-wrap justify-center gap-1 rounded-full border border-border bg-muted p-1">
         {filters.map((filter) => (
           <button

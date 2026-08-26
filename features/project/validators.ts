@@ -22,6 +22,7 @@ export type ICreateProjectPayload = z.infer<typeof createProjectPayload>
 export const searchProjectPayload = z.object({
   category: z.string().optional(),
   status: z.enum(["active", "inactive"]).optional(),
+  isFeatured: z.boolean().optional(),
 })
 export type ISearchProjectPayload = z.infer<typeof searchProjectPayload>
 

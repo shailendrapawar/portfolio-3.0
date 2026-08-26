@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 
+import { usePagination } from "@/hooks/usePagination"
 import { useSearchProjects } from "./useSearchProjects"
 import { useDeleteProject } from "./useDeleteProject"
 import type { ProjectWithId } from "./useProjectForm"
@@ -14,6 +15,31 @@ export function useProjectManager() {
 
   const [isOpen, setIsOpen] = useState(false)
   const [editing, setEditing] = useState<ProjectWithId | null>(null)
+
+  // Filter bar state. "all" => no category filter; search matches title,
+  // description, or skills (case-insensitive). Filtering is client-side over
+  // the already-loaded list.
+  const [search, setSearch] = useState("")
+  const [category, setCategory] = useState<string>("all")
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return (projects as ProjectWithId[]).filter((project) => {
+      const matchesCategory = category === "all" || project.category === category
+      if (!matchesCategory) return false
+      if (!q) return true
+      const haystack = [
+        project.title,
+        project.description,
+        ...(Array.isArray(project.skills) ? project.skills : []),
+      ]
+        .join(" ")
+        .toLowerCase()
+      return haystack.includes(q)
+    })
+  }, [projects, search, category])
+
+  const { pageItems, ...pagination } = usePagination(filtered, 5)
 
   // The project pending permanent deletion (drives the confirm modal).
   const [deleteTarget, setDeleteTarget] = useState<ProjectWithId | null>(null)
@@ -50,9 +76,14 @@ export function useProjectManager() {
   }
 
   return {
-    projects: projects as ProjectWithId[],
+    projects: pageItems,
+    pagination,
     isLoading,
     error,
+    search,
+    setSearch,
+    category,
+    setCategory,
     isOpen,
     setIsOpen,
     editing,

@@ -37,6 +37,9 @@ export class ProjectService extends DBRepository {
     if (filters.status) {
       where.status = filters.status as any
     }
+    if (filters.isFeatured !== undefined) {
+      where.isFeatured = filters.isFeatured
+    }
     const countPromise = ProjectModel.countDocuments(where)
     const itemsPromise = ProjectModel.find(where)
 

@@ -13,7 +13,7 @@ type SearchProjectsData = {
   count: number
 }
 
-export function useSearchProjects(query: string = "category=app") {
+export function useSearchProjects(query: string = "") {
   const [projects, setProjects] = useState<IProject[]>([])
   const [count, setCount] = useState<number>(0)
   const [error, setError] = useState<string | null>(null)
