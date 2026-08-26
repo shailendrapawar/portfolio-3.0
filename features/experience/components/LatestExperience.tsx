@@ -1,14 +1,16 @@
+"use client";
+
 import Link from "next/link";
 
-import { workExpirienceItems } from "@/lib/data/workExperience";
-
 import ExperienceTimeline from "./ExperienceTimeline";
+import { useSearchExperience } from "../hooks/useSearchExperience";
+import { toTimelineItems } from "../adapters";
 
 export default function LatestExperience() {
-  // Latest two experiences (highest order first).
-  const latest = [...workExpirienceItems]
-    .sort((a, b) => b.order - a.order)
-    .slice(0, 2);
+  const { experiences, isLoading, error } = useSearchExperience();
+
+  // API returns entries sorted by start date descending; take the latest two.
+  const latest = toTimelineItems(experiences).slice(0, 2);
 
   return (
     <section className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">
@@ -20,6 +22,15 @@ export default function LatestExperience() {
           Where I&apos;ve been working recently.
         </p>
       </div>
+
+      {isLoading && (
+        <p className="text-sm text-muted-foreground">Loading experience…</p>
+      )}
+      {error && (
+        <p className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
+      )}
 
       <ExperienceTimeline items={latest} />
 

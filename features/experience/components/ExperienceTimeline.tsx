@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { type IWorkExpirienceItem } from "@/lib/data/workExperience";
+import { type IWorkExpirienceItem } from "../adapters";
 
 export default function ExperienceTimeline({
   items,

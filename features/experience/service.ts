@@ -32,7 +32,8 @@ export class WorkExperienceService extends DBRepository {
     }
 
     const countPromise = WorkExperienceModel.countDocuments(where)
-    const itemsPromise = WorkExperienceModel.find(where)
+    // Most recent first.
+    const itemsPromise = WorkExperienceModel.find(where).sort({ startDate: -1 })
 
     const [count, items] = await Promise.all([countPromise, itemsPromise])
     return { count, items }
