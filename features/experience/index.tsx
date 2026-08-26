@@ -1,8 +1,17 @@
+"use client";
+
+import Link from "next/link";
+
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useAuthState } from "@/features/auth/hooks/useAuthState";
 import { workExpirienceItems } from "@/lib/data/workExperience";
 
 import ExperienceTimeline from "./components/ExperienceTimeline";
 
 export default function Experience() {
+  const { isAuthenticated } = useAuthState();
+
   return (
     <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">
       <div className="flex flex-col items-center gap-2 text-center">
@@ -12,6 +21,15 @@ export default function Experience() {
         <p className="max-w-xl text-sm text-muted-foreground md:text-base">
           My professional journey so far.
         </p>
+
+        {isAuthenticated && (
+          <Link
+            href="/admin/work-experience"
+            className={cn(buttonVariants(), "mt-2")}
+          >
+            Manage
+          </Link>
+        )}
       </div>
 
       <ExperienceTimeline items={workExpirienceItems} />
