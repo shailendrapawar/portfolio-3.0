@@ -28,7 +28,7 @@ const subjectOptions = [
   "Others",
 ];
 
-const initialData = { name: "", email: "", subject: "", message: "" };
+const initialData = { name: "", email: "", purpose: "", message: "" };
 
 export default function Contact() {
   const [emailData, setEmailData] = useState(initialData);
@@ -50,9 +50,9 @@ export default function Contact() {
     if (loading) return;
     setStatus(null);
 
-    const { name, email, subject, message } = emailData;
+    const { name, email, purpose, message } = emailData;
 
-    if (!name || !email || !subject || !message) {
+    if (!name || !email || !purpose || !message) {
       setStatus({ type: "error", text: "All fields are required." });
       return;
     }
@@ -63,7 +63,7 @@ export default function Contact() {
 
     try {
       setLoading(true);
-      await sendEmailService({ name, email, subject, message });
+      await sendEmailService({ name, email, purpose, message });
       setEmailData(initialData);
       setStatus({
         type: "success",
@@ -116,9 +116,9 @@ export default function Contact() {
             />
 
             <Select
-              value={emailData.subject}
+              value={emailData.purpose}
               onValueChange={(value) =>
-                setEmailData((prev) => ({ ...prev, subject: String(value) }))
+                setEmailData((prev) => ({ ...prev, purpose: String(value) }))
               }
               disabled={loading}
             >

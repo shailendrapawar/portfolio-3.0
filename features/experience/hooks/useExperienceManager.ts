@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 
 import { usePagination } from "@/hooks/usePagination"
+import { useDebounce } from "@/hooks/useDebounce"
 import { useSearchExperience } from "./useSearchExperience"
 import { useDeleteExperience } from "./useDeleteExperience"
 import type { ExperienceWithId } from "./useExperienceForm"
@@ -22,8 +23,12 @@ export function useExperienceManager() {
   const [search, setSearch] = useState("")
   const [status, setStatus] = useState<string>("all")
 
+  // Debounce so the list isn't re-filtered on every keystroke; the input stays
+  // bound to the live `search` value.
+  const debouncedSearch = useDebounce(search)
+
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
+    const q = debouncedSearch.trim().toLowerCase()
     return (experiences as ExperienceWithId[]).filter((experience) => {
       const matchesStatus =
         status === "all" ||
@@ -41,7 +46,7 @@ export function useExperienceManager() {
         .toLowerCase()
       return haystack.includes(q)
     })
-  }, [experiences, search, status])
+  }, [experiences, debouncedSearch, status])
 
   const { pageItems, ...pagination } = usePagination(filtered, 5)
 

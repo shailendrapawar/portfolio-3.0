@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 
 import { usePagination } from "@/hooks/usePagination"
+import { useDebounce } from "@/hooks/useDebounce"
 import { useSearchProjects } from "./useSearchProjects"
 import { useDeleteProject } from "./useDeleteProject"
 import type { ProjectWithId } from "./useProjectForm"
@@ -22,8 +23,12 @@ export function useProjectManager() {
   const [search, setSearch] = useState("")
   const [category, setCategory] = useState<string>("all")
 
+  // Debounce so the list isn't re-filtered on every keystroke; the input stays
+  // bound to the live `search` value.
+  const debouncedSearch = useDebounce(search)
+
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
+    const q = debouncedSearch.trim().toLowerCase()
     return (projects as ProjectWithId[]).filter((project) => {
       const matchesCategory = category === "all" || project.category === category
       if (!matchesCategory) return false
@@ -37,7 +42,7 @@ export function useProjectManager() {
         .toLowerCase()
       return haystack.includes(q)
     })
-  }, [projects, search, category])
+  }, [projects, debouncedSearch, category])
 
   const { pageItems, ...pagination } = usePagination(filtered, 5)
 
