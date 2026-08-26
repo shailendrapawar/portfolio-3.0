@@ -1,5 +1,9 @@
 import { HydratedDocument } from "mongoose"
-import { ICreateWorkExperiencePayload, IUpdateWorkExperiencePayload } from "./validators"
+import {
+  ICreateWorkExperiencePayload,
+  ISearchWorkExperiencePayload,
+  IUpdateWorkExperiencePayload,
+} from "./validators"
 import { IWorkExperience, WorkExperienceModel } from "./model"
 import { connectDB } from "@/lib/db/db"
 import { DBRepository } from "@/lib/db/db.repository"
@@ -18,10 +22,17 @@ export class WorkExperienceService extends DBRepository {
     return entity
   }
 
-  static async search(): Promise<{ count: number; items: WorkExperienceDocument[] }> {
+  static async search(
+    filters: ISearchWorkExperiencePayload = {}
+  ): Promise<{ count: number; items: WorkExperienceDocument[] }> {
     await connectDB()
-    const countPromise = WorkExperienceModel.countDocuments({})
-    const itemsPromise = WorkExperienceModel.find({})
+    const where: Record<string, unknown> = {}
+    if (filters.isCurrent !== undefined) {
+      where.isCurrent = filters.isCurrent
+    }
+
+    const countPromise = WorkExperienceModel.countDocuments(where)
+    const itemsPromise = WorkExperienceModel.find(where)
 
     const [count, items] = await Promise.all([countPromise, itemsPromise])
     return { count, items }
@@ -52,39 +63,47 @@ export class WorkExperienceService extends DBRepository {
             .map((s) => s.trim())
             .filter(Boolean)
     }
+    if (payload?.credentials !== undefined) entity.credentials = payload.credentials
+    if (payload?.linkedin !== undefined) entity.linkedin = payload.linkedin
     if (payload?.isCurrent !== undefined) entity.isCurrent = payload.isCurrent
     return entity
+  }
+
+  // Only one experience may be the current role. Throws if another current
+  // entry already exists (excluding `excludeId`, used on update).
+  private static async assertSingleCurrent(isCurrent: boolean, excludeId?: string) {
+    if (!isCurrent) return
+    const where: Record<string, unknown> = { isCurrent: true }
+    if (excludeId) where._id = { $ne: excludeId }
+    const existing = await WorkExperienceModel.findOne(where)
+    if (existing) {
+      throw new ApiError(409, "A current role already exists. Only one is allowed.")
+    }
   }
 
   static async create(payload: ICreateWorkExperiencePayload) {
     await connectDB()
     const entity = new WorkExperienceModel()
     this.set(payload, entity)
+    await this.assertSingleCurrent(entity.isCurrent)
     await entity.save()
     return entity
   }
 
   static async update(id: string, payload: IUpdateWorkExperiencePayload) {
-    await connectDB()
-    if (!id) {
-      throw new ApiError(400, "Work experience ID is required")
-    }
-    const entity = await WorkExperienceModel.findById(id)
+    const entity = await this.get(id)
     if (!entity) {
       throw new ApiError(404, "Work experience not found")
     }
     this.set(payload, entity)
+    await this.assertSingleCurrent(entity.isCurrent, id)
     await entity.save()
     return entity
   }
 
   // Permanently deletes a work experience entry.
   static async remove(id: string) {
-    await connectDB()
-    if (!id) {
-      throw new ApiError(400, "Work experience ID is required")
-    }
-    const entity = await WorkExperienceModel.findById(id)
+    const entity = await this.get(id)
     if (!entity) {
       throw new ApiError(404, "Work experience not found")
     }

@@ -31,6 +31,16 @@ const workExperienceSchema = new Schema({
     type: [String],
     required: true,
   },
+  // Google Drive link to this company's credentials.
+  credentials: {
+    type: String,
+    required: false,
+  },
+  // Optional LinkedIn URL/handle for the company.
+  linkedin: {
+    type: String,
+    required: false,
+  },
   isCurrent: {
     type: Boolean,
     required: true,

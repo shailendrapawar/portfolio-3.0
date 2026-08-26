@@ -1,11 +1,27 @@
 import { WorkExperienceService } from "@/features/experience/service"
-import { createWorkExperiencePayload } from "@/features/experience/validators"
+import {
+  createWorkExperiencePayload,
+  searchWorkExperiencePayload,
+} from "@/features/experience/validators"
 import { requireAuth } from "@/lib/auth/guard"
 import { sendResponse, handleError } from "@/lib/api/response"
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const { count, items } = await WorkExperienceService.search()
+    const url = new URL(request.url)
+    const isCurrentParam = url.searchParams.get("isCurrent")
+
+    const parsed = searchWorkExperiencePayload.safeParse({
+      // Only apply the filter when the param is explicitly true/false.
+      isCurrent:
+        isCurrentParam === null ? undefined : isCurrentParam === "true",
+    })
+
+    if (!parsed.success) {
+      return sendResponse(400, "Validation failed", parsed.error.flatten())
+    }
+
+    const { count, items } = await WorkExperienceService.search(parsed.data)
 
     return sendResponse(200, "Work experiences fetched successfully", { items, count })
   } catch (error) {

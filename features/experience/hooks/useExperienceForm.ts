@@ -5,16 +5,15 @@ import type { IWorkExperience } from "../model"
 
 export type ExperienceWithId = IWorkExperience & { _id: string }
 
-// The form keeps `skills` as a comma-separated string (SkillsInput) and
-// `pointers` as a newline-separated string (a textarea); both are converted to
-// string[] only when sending to the API. Dates are held as `Date | undefined`
-// (undefined until picked) and serialized to ISO strings on submit.
+// The form keeps `skills` as a comma-separated string (SkillsInput) and edits
+// `pointers` as a string[] directly (PointersInput). Dates are held as
+// `Date | undefined` (undefined until picked) and serialized to ISO strings on
+// submit.
 type ExperienceFormValues = Omit<
   ICreateWorkExperiencePayload,
-  "skills" | "pointers" | "startDate" | "endDate"
+  "skills" | "startDate" | "endDate"
 > & {
   skills: string
-  pointers: string
   startDate?: Date
   endDate?: Date
 }
@@ -32,8 +31,10 @@ const emptyValues: ExperienceFormValues = {
   startDate: undefined,
   endDate: undefined,
   description: "",
-  pointers: "",
+  pointers: [],
   skills: "",
+  credentials: "",
+  linkedin: "",
   isCurrent: false,
 }
 
@@ -46,12 +47,12 @@ function toValues(experience: ExperienceWithId | null): ExperienceFormValues {
     startDate: experience.startDate ? new Date(experience.startDate) : undefined,
     endDate: experience.endDate ? new Date(experience.endDate) : undefined,
     description: experience.description,
-    pointers: Array.isArray(experience.pointers)
-      ? experience.pointers.join("\n")
-      : (experience.pointers ?? ""),
+    pointers: Array.isArray(experience.pointers) ? experience.pointers : [],
     skills: Array.isArray(experience.skills)
       ? experience.skills.join(",")
       : (experience.skills ?? ""),
+    credentials: experience.credentials ?? "",
+    linkedin: experience.linkedin ?? "",
     isCurrent: experience.isCurrent,
   }
 }
@@ -63,14 +64,6 @@ function toSkillsArray(skills: string): string[] {
     .split(",")
     .map((s) => s.trim())
     .filter((s) => s && !seen.has(s) && seen.add(s))
-}
-
-// Newline-separated string -> trimmed array of pointers (blank lines dropped).
-function toPointersArray(pointers: string): string[] {
-  return pointers
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean)
 }
 
 type UseExperienceFormArgs = {
@@ -130,7 +123,9 @@ export function useExperienceForm({
         // A current role has no end date.
         endDate: values.isCurrent ? undefined : values.endDate,
         skills: toSkillsArray(values.skills),
-        pointers: toPointersArray(values.pointers),
+        pointers: values.pointers.map((p) => p.trim()).filter(Boolean),
+        credentials: values.credentials?.trim() || undefined,
+        linkedin: values.linkedin?.trim() || undefined,
       }
 
       const res = await fetch(url, {

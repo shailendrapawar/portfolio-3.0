@@ -8,6 +8,7 @@ import { DatePicker } from "@/components/ui/date-picker"
 import { cn } from "@/lib/utils"
 
 import SkillsInput from "@/features/project/components/SkillsInput"
+import PointersInput from "./PointersInput"
 import { useExperienceForm, type ExperienceWithId } from "../hooks/useExperienceForm"
 
 type ExperienceFormProps = {
@@ -100,17 +101,12 @@ export default function ExperienceForm({ experience, onSuccess }: ExperienceForm
         <Label htmlFor="pointers" className={labelClass}>
           Pointers
         </Label>
-        <Textarea
+        <PointersInput
           id="pointers"
           disabled={loading}
-          placeholder="One bullet per line"
-          className="min-h-20 text-xs"
           value={values.pointers}
-          onChange={(e) => setField("pointers", e.target.value)}
+          onChange={(v) => setField("pointers", v)}
         />
-        <span className="text-[11px] text-muted-foreground">
-          One bullet point per line.
-        </span>
       </div>
 
       <div className="flex flex-col gap-1">
@@ -122,6 +118,36 @@ export default function ExperienceForm({ experience, onSuccess }: ExperienceForm
           disabled={loading}
           value={values.skills}
           onChange={(v) => setField("skills", v)}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="credentials" className={labelClass}>
+          Credentials (Google Drive link)
+        </Label>
+        <Input
+          id="credentials"
+          type="url"
+          disabled={loading}
+          placeholder="https://drive.google.com/…"
+          className={inputClass}
+          value={values.credentials ?? ""}
+          onChange={(e) => setField("credentials", e.target.value)}
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <Label htmlFor="linkedin" className={labelClass}>
+          LinkedIn (optional)
+        </Label>
+        <Input
+          id="linkedin"
+          type="url"
+          disabled={loading}
+          placeholder="https://www.linkedin.com/company/…"
+          className={inputClass}
+          value={values.linkedin ?? ""}
+          onChange={(e) => setField("linkedin", e.target.value)}
         />
       </div>
 
