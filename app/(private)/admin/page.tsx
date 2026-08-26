@@ -1,11 +1,14 @@
+import { Suspense } from "react"
+
 import ProtectRoute from "@/components/ProtectRoute"
+import AdminManager from "@/components/AdminManager"
 
 export default function Admin() {
   return (
     <ProtectRoute>
-      <div>
-        <h1>Admin</h1>
-      </div>
+      <Suspense>
+        <AdminManager />
+      </Suspense>
     </ProtectRoute>
   )
 }

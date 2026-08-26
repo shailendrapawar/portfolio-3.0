@@ -2,13 +2,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { INavItem, navItems } from "../lib/data/navItems";
-import { TbMenu3 } from "react-icons/tb";
+import { TbMenu3, TbX, TbSettings } from "react-icons/tb";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAuthState } from "@/features/auth/hooks/useAuthState";
 export default function Navbar() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { isAuthenticated } = useAuthState();
+
+  // Show the Admin link only to authenticated users.
+  const items: INavItem[] = isAuthenticated
+    ? [...navItems, { label: "Admin", path: "/admin", icon: TbSettings }]
+    : navItems;
 
   const isActive = (path: string) =>
     path === "/" ? pathname === "/" : pathname.startsWith(path);
@@ -19,7 +26,7 @@ export default function Navbar() {
       <section className="flex justify-between items-center gap-5 h-full rounded-full px-5 relative bg-primary text-primary-foreground">
       <h1>LOGO</h1>
       <nav className="hidden md:flex h-full items-center gap-5">
-        {navItems.map((route:INavItem) => (
+        {items.map((route:INavItem) => (
           <Link
             key={route.path}
             href={route.path}
@@ -33,24 +40,36 @@ export default function Navbar() {
         ))}
       </nav>
       {isMobileMenuOpen && (
-        <nav className="md:hidden absolute top-16 left-1/2 -translate-x-1/2 w-4/5 h-auto flex flex-col items-center justify-center gap-4 rounded-b-3xl py-5 bg-secondary text-primary-foreground ">
-          {navItems.map((route:INavItem) => (
-            <Link
-              key={route.path}
-              href={route.path}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={cn(
-                "border-b-2 border-transparent transition-colors hover:text-white w-1/3 text-center",
-                isActive(route.path) && "border-white border-b-2 text-white"
-              )}
-            >
-              {route.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="md:hidden fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-black/80 text-white backdrop-blur-md">
+          <button
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="absolute top-6 right-6"
+          >
+            <TbX className="size-8 cursor-pointer" />
+          </button>
+
+          <nav className="flex flex-col items-start gap-6">
+            {items.map((route:INavItem) => (
+              <Link
+                key={route.path}
+                href={route.path}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                  "inline-flex items-center gap-2.5 border-b-2 border-transparent pb-1.5 text-2xl font-medium transition-colors hover:text-white/80",
+                  isActive(route.path) && "border-white text-white"
+                )}
+              >
+                <route.icon className="size-6" />
+                {route.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       )}
 
-      <aside className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+      <aside className="md:hidden" onClick={() => setIsMobileMenuOpen(true)}>
        <TbMenu3 className="size-8 cursor-pointer" />
       </aside>
       
