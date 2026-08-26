@@ -30,4 +30,16 @@ export const ENV = {
     apiSecret: process.env.CLOUDINARY_API_SECRET || "",
     folder: process.env.CLOUDINARY_FOLDER || "portfolio",
   },
+  mail: {
+    host: process.env.MAIL_HOST || "smtp.gmail.com",
+    port: Number(process.env.MAIL_PORT) || 587,
+    // Secure (implicit TLS) is used for port 465; STARTTLS otherwise.
+    secure: process.env.MAIL_SECURE === "true",
+    user: process.env.MAIL_USER || "",
+    password: process.env.MAIL_PASSWORD || "",
+    // Address shown in the From header; defaults to the auth user.
+    from: process.env.MAIL_FROM || process.env.MAIL_USER || "",
+    // Where contact-form notifications are delivered; defaults to the auth user.
+    to: process.env.MAIL_TO || process.env.MAIL_USER || "",
+  },
 }
