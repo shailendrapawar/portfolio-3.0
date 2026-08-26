@@ -37,9 +37,9 @@ export const ENV = {
     secure: process.env.MAIL_SECURE === "true",
     user: process.env.MAIL_USER || "",
     password: process.env.MAIL_PASSWORD || "",
-    // Address shown in the From header; defaults to the auth user.
-    from: process.env.MAIL_FROM || process.env.MAIL_USER || "",
-    // Where contact-form notifications are delivered; defaults to the auth user.
-    to: process.env.MAIL_TO || process.env.MAIL_USER || "",
+    // Both the From header and the contact-notification recipient are the
+    // account itself.
+    from: process.env.MAIL_USER || "",
+    to: process.env.MAIL_USER || "",
   },
 }
