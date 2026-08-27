@@ -5,7 +5,15 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { TechIcon } from "@/components/TechIcon";
 import { type IWorkExpirienceItem } from "../adapters";
+
+// LinkedIn may be stored as a full URL or a bare handle; normalize to a URL.
+function linkedinHref(value: string) {
+  return /^https?:\/\//i.test(value)
+    ? value
+    : `https://www.linkedin.com/company/${value.replace(/^@/, "")}`;
+}
 
 export default function ExperienceTimeline({
   items,
@@ -129,6 +137,33 @@ export default function ExperienceTimeline({
                     className="mt-1 h-7 w-auto self-start"
                     unoptimized
                   />
+                )}
+
+                {(item.linkedin || item.credentials) && (
+                  <div className="mt-1 flex flex-wrap items-center gap-2">
+                    {item.linkedin && (
+                      <a
+                        href={linkedinHref(item.linkedin)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                      >
+                        <TechIcon icon="mdi:linkedin" size={16} />
+                        LinkedIn
+                      </a>
+                    )}
+                    {item.credentials && (
+                      <a
+                        href={item.credentials}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                      >
+                        <TechIcon icon="mdi:certificate-outline" size={16} />
+                        Credentials
+                      </a>
+                    )}
+                  </div>
                 )}
               </div>
             </div>

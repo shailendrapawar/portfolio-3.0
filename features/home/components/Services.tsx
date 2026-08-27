@@ -80,7 +80,7 @@ export default function Services() {
         {/* p-8 reserves space for the magic balls, which orbit ~2rem beyond
             the ring; without it the balls overflow into the gap inconsistently */}
         <figure className="float-anime flex w-full items-center justify-center p-8 sm:w-auto sm:shrink-0">
-          <div className="service-ring relative flex h-60 w-60 items-center justify-center rounded-full border border-secondary sm:h-70 sm:w-70 md:h-90 md:w-90">
+          <div className="service-ring relative flex h-60 w-60 items-center justify-center rounded-full border border-secondary sm:h-70 sm:w-70 md:h-76 md:w-76">
             <MagicBall
               title="API"
               extraClasses="-top-8 service-unrotate"
@@ -92,13 +92,13 @@ export default function Services() {
               icon={<FaDatabase className="h-5 w-5 text-black" />}
             />
 
-            <div className="service-unrotate relative h-50 w-40 md:h-65 md:w-55">
+            <div className="service-unrotate relative h-50 w-40 md:h-55 md:w-46">
               <Image
                 key={src}
                 src={src}
                 alt="Wizard meditating"
                 fill
-                sizes="(max-width: 768px) 10rem, 13.75rem"
+                sizes="(max-width: 768px) 10rem, 11.5rem"
                 className="object-contain"
                 priority
                 unoptimized

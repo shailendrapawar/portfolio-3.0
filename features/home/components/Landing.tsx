@@ -1,19 +1,11 @@
 import Link from "next/link";
-import { FaGithub, FaFacebook } from "react-icons/fa";
-import { FaLinkedin } from "react-icons/fa6";
+import { FaGithub } from "react-icons/fa";
+import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { SiLeetcode } from "react-icons/si";
 
 import MagicBall from "@/components/MagicBall";
+import { socialUrls, resumeUrl } from "@/lib/data/socialItems";
 import Wizard from "./Wizard";
-
-const urls = {
-  linkedin: "https://www.linkedin.com/in/shailendra-pawar792/",
-  github: "https://github.com/shailendrapawar/",
-  facebook: "https://www.facebook.com/shailendra.pawar.50159",
-  leetcode: "https://leetcode.com/u/shailendrapawar/",
-  resume:
-    "https://drive.google.com/drive/folders/1-OdardWOtvSyZfOf8WlEV3P45mQkgqAH?usp=drive_link",
-};
 
 function Landing() {
   return (
@@ -38,7 +30,7 @@ function Landing() {
           <div className="flex h-10 w-55 gap-2 text-foreground sm:h-12 sm:w-65 md:h-14 md:w-80">
             <a
               className="flex h-full w-[50%] cursor-pointer items-center justify-center rounded-tl-3xl bg-primary text-white shadow-sm shadow-black transition-all hover:w-[70%] active:shadow-none sm:text-lg md:text-2xl"
-              href={urls.resume}
+              href={resumeUrl}
               target="_blank"
             >
               Resume
@@ -60,7 +52,7 @@ function Landing() {
               delay={0.7}
               title="GitHub"
               icon={
-                <a href={urls.github} target="_blank" className="h-full w-full">
+                <a href={socialUrls.github} target="_blank" className="h-full w-full">
                   <FaGithub className="h-full w-full text-black" />
                 </a>
               }
@@ -70,7 +62,7 @@ function Landing() {
               delay={0.1}
               title="LinkedIn"
               icon={
-                <a href={urls.linkedin} target="_blank" className="h-full w-full">
+                <a href={socialUrls.linkedin} target="_blank" className="h-full w-full">
                   <FaLinkedin className="h-full w-full text-black" />
                 </a>
               }
@@ -83,7 +75,7 @@ function Landing() {
               delay={0.2}
               title="LeetCode"
               icon={
-                <a href={urls.leetcode} target="_blank" className="h-full w-full">
+                <a href={socialUrls.leetcode} target="_blank" className="h-full w-full">
                   <SiLeetcode className="h-full w-full text-black" />
                 </a>
               }
@@ -91,10 +83,10 @@ function Landing() {
             <MagicBall
               extraClasses="-left-8 bottom-10 magicBall-anime"
               delay={0.5}
-              title="Facebook"
+              title="Twitter"
               icon={
-                <a href={urls.facebook} target="_blank" className="h-full w-full">
-                  <FaFacebook className="h-full w-full text-black" />
+                <a href={socialUrls.twitter} target="_blank" className="h-full w-full">
+                  <FaXTwitter className="h-full w-full text-black" />
                 </a>
               }
             />

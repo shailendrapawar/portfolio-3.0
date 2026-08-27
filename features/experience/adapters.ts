@@ -11,6 +11,10 @@ export type IWorkExpirienceItem = {
   description: string
   pointers?: string[]
   skills: string
+  // Google Drive link to this company's credentials, shown when present.
+  credentials?: string
+  // LinkedIn URL/handle for the company, shown when present.
+  linkedin?: string
   isCurrent: boolean
 }
 
@@ -39,6 +43,8 @@ export function toTimelineItems(
     description: exp.description,
     pointers: exp.pointers ?? [],
     skills: Array.isArray(exp.skills) ? exp.skills.join(",") : (exp.skills ?? ""),
+    credentials: exp.credentials || undefined,
+    linkedin: exp.linkedin || undefined,
     isCurrent: exp.isCurrent,
   }))
 }
