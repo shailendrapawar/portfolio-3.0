@@ -5,7 +5,6 @@ import { useTheme } from "next-themes";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FaLink, FaGithub } from "react-icons/fa6";
 import { IProject } from "../model";
-// import { IProject } from "@/lib/data/projectItems";
 
 
 
