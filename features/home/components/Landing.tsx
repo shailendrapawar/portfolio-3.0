@@ -4,8 +4,9 @@ import { FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { SiLeetcode } from "react-icons/si";
 
 import MagicBall from "@/components/MagicBall";
-import { socialUrls, resumeUrl } from "@/lib/data/socialItems";
+import { socialUrls } from "@/lib/data/socialItems";
 import Wizard from "./Wizard";
+import ResumeButton from "./ResumeButton";
 
 function Landing() {
   return (
@@ -28,13 +29,7 @@ function Landing() {
           </p>
 
           <div className="flex h-10 w-55 gap-2 text-foreground sm:h-12 sm:w-65 md:h-14 md:w-80">
-            <a
-              className="flex h-full w-[50%] cursor-pointer items-center justify-center rounded-tl-3xl bg-primary text-white shadow-sm shadow-black transition-all hover:w-[70%] active:shadow-none sm:text-lg md:text-2xl"
-              href={resumeUrl}
-              target="_blank"
-            >
-              Resume
-            </a>
+            <ResumeButton />
             <Link
               className="flex h-full w-[50%] cursor-pointer items-center justify-center rounded-br-3xl border-2 border-primary transition-all hover:w-[70%] sm:text-lg md:text-2xl"
               href="/contact"

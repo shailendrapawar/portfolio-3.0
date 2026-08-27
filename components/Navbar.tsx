@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { INavItem, navItems } from "../lib/data/navItems";
@@ -24,7 +25,16 @@ export default function Navbar() {
   return (
     <main className="h-20  w-full relative py-2 px-4 z-50">
       <section className="flex justify-between items-center gap-5 h-full rounded-full px-5 relative bg-primary text-primary-foreground">
-      <h1>LOGO</h1>
+      <Link href="/" aria-label="Home" className="ml-3 flex items-center">
+        <Image
+          src="/s-letter.png"
+          alt="Shailendra Pawar logo"
+          width={40}
+          height={40}
+          priority
+          className="h-10 w-auto"
+        />
+      </Link>
       <nav className="hidden md:flex h-full items-center gap-5">
         {items.map((route:INavItem) => (
           <Link
@@ -69,7 +79,7 @@ export default function Navbar() {
         </div>
       )}
 
-      <aside className="md:hidden" onClick={() => setIsMobileMenuOpen(true)}>
+      <aside className="mr-3 md:hidden" onClick={() => setIsMobileMenuOpen(true)}>
        <TbMenu3 className="size-8 cursor-pointer" />
       </aside>
       
