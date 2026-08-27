@@ -5,27 +5,35 @@ import { SiLeetcode } from "react-icons/si";
 
 import MagicBall from "@/components/MagicBall";
 import { socialUrls } from "@/lib/data/socialItems";
+import { AuthService } from "@/features/auth/service";
 import Wizard from "./Wizard";
 import ResumeButton from "./ResumeButton";
 
-function Landing() {
+async function Landing() {
+  // Fetched server-side so the home page stays cacheable (ISR), like the
+  // experience section.
+  const profile = await AuthService.getPublicProfile();
+  const name = profile?.name || "Shailendra Pawar";
+  const designation = profile?.designation || "Full Stack Developer";
+  const bio =
+    profile?.bio?.trim() ||
+    "MERN stack wizard , with a knack for real-time features, and seemless user experience";
+
   return (
     <div className="relative flex min-h-[calc(100vh-80px)] justify-center">
       <section className="flex min-h-[calc(100vh-80px)] w-full max-w-250 flex-col sm:flex-row">
         <main className="flex h-[50%] w-full flex-col items-start justify-center gap-8 p-3 sm:h-full sm:w-[50%] sm:gap-15 sm:pl-10">
           <h3 className="text-xl text-foreground sm:text-2xl md:text-4xl">
-            Hi, I&apos;m{" "}
-            <span className="text-accent">Shailendra Pawar</span>
+            Hi, I&apos;m <span className="text-accent">{name}</span>
           </h3>
 
           <h1 className="text-3xl text-secondary sm:text-5xl md:text-6xl">
-            Full Stack Developer
+            {designation}
           </h1>
           
 
-          <p className="w-[80%] text-sm text-muted-foreground sm:text-lg md:text-xl">
-            MERN stack wizard , with a knack for real-time features, and seemless
-            user experience
+          <p className="w-[80%] text-sm whitespace-pre-line text-muted-foreground sm:text-lg md:text-xl">
+            {bio}
           </p>
 
           <div className="flex h-10 w-55 gap-2 text-foreground sm:h-12 sm:w-65 md:h-14 md:w-80">

@@ -1,11 +1,17 @@
-"use client";
-
 import Image from "next/image";
 
-const illustration =
+import { AuthService } from "@/features/auth/service";
+
+// Fallback shown if no profile picture has been set yet.
+const FALLBACK_ILLUSTRATION =
   "https://res.cloudinary.com/soty762i/image/upload/v1787480000/test.png";
 
-export default function AboutMe() {
+export default async function AboutMe() {
+  // Fetched server-side (like LatestExperience) so the home page stays cacheable.
+  const profile = await AuthService.getPublicProfile();
+  const illustration = profile?.profilePicture?.url || FALLBACK_ILLUSTRATION;
+  const name = profile?.name || "Shailendra Pawar";
+
   return (
     <div className="relative flex min-h-150 w-full max-w-full justify-center overflow-x-clip p-5 sm:min-h-90">
       <section className="animate-in fade-in relative z-10 flex w-full max-w-250 flex-col items-center justify-center gap-8 duration-500 sm:flex-row-reverse sm:gap-12">
@@ -49,7 +55,7 @@ export default function AboutMe() {
               {/* Photo contained within the pedestal */}
               <Image
                 src={illustration}
-                alt="Shailendra Pawar"
+                alt={name}
                 fill
                 sizes="(max-width: 640px) 16rem, 18rem"
                 className="pointer-events-none object-contain object-center drop-shadow-[0_18px_30px_rgba(0,0,0,0.5)]"

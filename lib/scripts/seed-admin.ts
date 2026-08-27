@@ -1,4 +1,5 @@
 // src/scripts/seed-admin.ts
+// Manual admin seed — run with `npm run seed:admin`.
 
 import bcrypt from "bcrypt"
 import { UserModel } from "@/features/auth/model"
@@ -19,7 +20,33 @@ async function seedAdmin() {
   const existingUser = await UserModel.findOne({ email })
 
   if (existingUser) {
-    console.log("Admin already exists")
+    // Backfill fields added to the schema after this user was created.
+    // Mongoose defaults never write into already-saved documents, so set them
+    // explicitly here. Only fills what's missing — won't overwrite your edits.
+    let changed = false
+
+    if (existingUser.designation === undefined) {
+      existingUser.designation = "Full Stack Developer"
+      changed = true
+    }
+    if (existingUser.bio === undefined) {
+      existingUser.bio =
+        "MERN stack wizard , with a knack for real-time features, and seemless user experience"
+      changed = true
+    }
+    if (!existingUser.profilePicture?.url) {
+      existingUser.profilePicture = {
+        url: "https://res.cloudinary.com/soty762i/image/upload/v1787480000/test.png",
+      }
+      changed = true
+    }
+
+    if (changed) {
+      await existingUser.save()
+      console.log("Admin already exists — backfilled missing profile fields")
+    } else {
+      console.log("Admin already exists — nothing to backfill")
+    }
     return
   }
 

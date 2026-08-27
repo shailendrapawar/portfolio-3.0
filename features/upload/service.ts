@@ -29,6 +29,15 @@ export class UploadService extends DBRepository {
     return entity
   }
 
+  // Removes the tracking record for an asset by its Cloudinary public_id.
+  // Use when the underlying asset has been deleted elsewhere, so no stale
+  // record is left behind. Best-effort — no-op if nothing matches.
+  static async removeByPublicId(publicId: string) {
+    await connectDB()
+    if (!publicId) return
+    await UploadModel.deleteOne({ id: publicId })
+  }
+
   // Cleans up orphaned uploads: every "pending" record is an asset that was
   // uploaded but never claimed by a project. Deletes each from Cloudinary
   // (by public_id) and removes the record. Meant to be run on a schedule.

@@ -9,23 +9,29 @@ import { cn } from "@/lib/utils"
 import ProjectManager from "@/features/project/components/ProjectManager"
 import ExperienceManager from "@/features/experience/components/ExperienceManager"
 import MessageManager from "@/features/message/components/MessageManager"
+import ProfileInfoForm from "@/features/auth/components/ProfileInfoForm"
+import ProfilePictureForm from "@/features/auth/components/ProfilePictureForm"
 import { useUnreadMessagesCount } from "@/features/message/hooks/useUnreadMessagesCount"
 
-type Tab = "projects" | "experience" | "messages"
+type Tab = "projects" | "experience" | "messages" | "profile"
 
 const tabs: { label: string; value: Tab }[] = [
   { label: "Projects", value: "projects" },
   { label: "Work experience", value: "experience" },
+  { label: "Profile", value: "profile" },
 ]
 
 export default function AdminManager() {
   const params = useSearchParams()
+  const tabParam = params.get("tab")
   const initial: Tab =
-    params.get("tab") === "experience"
+    tabParam === "experience"
       ? "experience"
-      : params.get("tab") === "messages"
+      : tabParam === "messages"
         ? "messages"
-        : "projects"
+        : tabParam === "profile"
+          ? "profile"
+          : "projects"
 
   const [active, setActive] = useState<Tab>(initial)
   const { unread, refresh } = useUnreadMessagesCount()
@@ -91,6 +97,12 @@ export default function AdminManager() {
       {active === "projects" && <ProjectManager />}
       {active === "experience" && <ExperienceManager />}
       {active === "messages" && <MessageManager />}
+      {active === "profile" && (
+        <>
+          <ProfilePictureForm />
+          <ProfileInfoForm />
+        </>
+      )}
     </div>
   )
 }
