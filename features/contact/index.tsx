@@ -73,7 +73,10 @@ export default function Contact() {
       console.error(err);
       setStatus({
         type: "error",
-        text: "Something went wrong. Please try again.",
+        text:
+          err instanceof Error
+            ? err.message
+            : "Something went wrong. Please try again.",
       });
     } finally {
       setLoading(false);

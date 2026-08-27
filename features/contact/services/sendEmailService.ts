@@ -12,7 +12,12 @@ export default async function sendEmailService(data: ContactPayload) {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) throw new Error("Failed to send message");
+  const body = await res.json().catch(() => null);
 
-  return res.json();
+  // Surface the server's message (e.g. the rate-limit notice) to the caller.
+  if (!res.ok || !body?.success) {
+    throw new Error(body?.message ?? "Failed to send message");
+  }
+
+  return body;
 }

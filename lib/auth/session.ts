@@ -2,10 +2,10 @@ import { cookies } from "next/headers"
 import { signToken, verifyToken, type AuthTokenPayload } from "./jwt"
 
 export const AUTH_COOKIE = "auth_token"
-const MAX_AGE = 60 * 60 * 24 * 7 // 7 days
+const MAX_AGE = 60 * 15 // 15 minutes
 
 export async function createSession(payload: AuthTokenPayload) {
-  const token = await signToken(payload, "7d")
+  const token = await signToken(payload, "15m")
   const cookieStore = await cookies()
 
   cookieStore.set(AUTH_COOKIE, token, {

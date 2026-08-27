@@ -6,6 +6,7 @@ import {
 } from "@/features/message/validators"
 import { requireAuth } from "@/lib/auth/guard"
 import { sendResponse, handleError } from "@/lib/api/response"
+import { rateLimit, getClientIp } from "@/lib/api/rate-limit"
 import { mailer } from "@/lib/providers/mailer"
 import {
   CONTACT_TEMPLATE_KEY,
@@ -15,6 +16,19 @@ import {
 // Public — anyone submitting the contact form creates a message.
 export async function POST(request: Request) {
   try {
+    // Throttle per IP before any parsing/DB/mail work, so a flood is cheap
+    // to reject. 5 submissions per minute is generous for a human.
+    const ip = getClientIp(request)
+    const limit = rateLimit(`contact:${ip}`, { limit: 5, windowMs: 60_000 })
+    if (!limit.ok) {
+      const response = sendResponse(
+        429,
+        "Too many requests. Please wait a moment and try again."
+      )
+      response.headers.set("Retry-After", String(limit.retryAfterSec))
+      return response
+    }
+
     const body = await request.json().catch(() => null)
 
     const parsed = createMessagePayload.safeParse(body)

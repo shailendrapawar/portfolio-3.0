@@ -42,7 +42,7 @@ export function emailLayout(opts: {
   footer?: string
 }): string {
   const t = EMAIL_THEME
-  const eyebrow = opts.eyebrow ?? "Portfolio"
+  const eyebrow = opts.eyebrow ?? "Shailendra's Portfolio"
 
   return `<!doctype html>
 <html>

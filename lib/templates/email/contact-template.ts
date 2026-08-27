@@ -41,6 +41,7 @@ export function contactTemplate(data: ContactTemplateData): RenderedEmail {
   const content = `
     <tr>
       <td style="padding:24px 28px 0;">
+        <span style="font-size:13px;font-weight:600;color:${T.mutedForeground};margin-right:8px;">Purpose:</span>
         <span style="display:inline-block;padding:6px 14px;border-radius:999px;background:rgba(37,99,235,.15);border:1px solid ${T.primary};color:${T.accent};font-size:12px;font-weight:600;">${purpose}</span>
       </td>
     </tr>

@@ -15,7 +15,7 @@ export type AuthTokenPayload = {
 
 export async function signToken(
   payload: AuthTokenPayload,
-  expiresIn: string = "7d"
+  expiresIn: string = "15m"
 ): Promise<string> {
   return new SignJWT({ email: payload.email })
     .setProtectedHeader({ alg: ALG })
