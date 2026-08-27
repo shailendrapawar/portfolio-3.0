@@ -15,7 +15,10 @@ export function useProtectRoute() {
   const pathname = usePathname()
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
-  const [isReady, setIsReady] = useState(() => useAuthStore.persist.hasHydrated())
+  // Start false so the initial (server) render never touches the persist API,
+  // which is unavailable during prerendering. Hydration is resolved on the
+  // client inside the effect below.
+  const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
     const unsub = useAuthStore.persist.onFinishHydration(() => setIsReady(true))
