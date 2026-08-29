@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache"
+
 import { ProjectService } from "@/features/project/service"
 import { createProjectPayload, searchProjectPayload } from "@/features/project/validators"
 import { requireAuth } from "@/lib/auth/guard"
@@ -41,6 +43,11 @@ export async function POST(request: Request) {
     }
 
     const item = await ProjectService.create(parsed.data)
+
+    // Bust the ISR cache so the new project shows immediately instead of
+    // waiting for the revalidate window (/ = featured, /projects = full list).
+    revalidatePath("/")
+    revalidatePath("/projects")
 
     return sendResponse(201, "Project created successfully", { item })
   } catch (error) {

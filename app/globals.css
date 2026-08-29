@@ -81,7 +81,7 @@
     --sidebar-border: #D1D9E6;
     --sidebar-ring: #2563EB;
     --grid-line: oklch(0.85 0 0 / 30%);
-    --grid-size: 80px;
+    --grid-size: 120px;
 }
 
 .dark {

@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache"
+
 import { ProjectService } from "@/features/project/service"
 import { updateProjectPayload } from "@/features/project/validators"
 import { requireAuth } from "@/lib/auth/guard"
@@ -35,6 +37,10 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 
     const item = await ProjectService.update(id, parsed.data)
 
+    // Bust the ISR cache so the edit shows immediately (/ = featured, /projects = full list).
+    revalidatePath("/")
+    revalidatePath("/projects")
+
     return sendResponse(200, "Project updated successfully", { item })
   } catch (error) {
     return handleError(error)
@@ -49,6 +55,10 @@ export async function DELETE(_request: Request, { params }: RouteContext) {
     const { id } = await params
 
     const item = await ProjectService.remove(id)
+
+    // Bust the ISR cache so the removal shows immediately (/ = featured, /projects = full list).
+    revalidatePath("/")
+    revalidatePath("/projects")
 
     return sendResponse(200, "Project deleted permanently", { item })
   } catch (error) {

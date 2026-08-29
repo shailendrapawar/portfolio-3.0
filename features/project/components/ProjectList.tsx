@@ -1,4 +1,4 @@
-
+"use client";
 
 import { useMemo, useState } from "react";
 
@@ -17,11 +17,9 @@ const filters: { label: string; value: Filter }[] = [
 
 interface IProjectListProps {
   projects: IProject[];
-  isLoading: boolean;
-  error: string | null;
 }
 
-export default function ProjectList({ projects, isLoading, error }:IProjectListProps) {
+export default function ProjectList({ projects }: IProjectListProps) {
   const [active, setActive] = useState<Filter>("all");
 
   const visible = useMemo(
@@ -31,15 +29,6 @@ export default function ProjectList({ projects, isLoading, error }:IProjectListP
         : projects.filter((project) => project.category === active),
     [active, projects]
   );
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
 
   return (
     <div className="flex min-h-[calc(100vh-40vh)] w-full flex-col items-center gap-8">

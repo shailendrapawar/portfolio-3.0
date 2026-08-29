@@ -1,11 +1,7 @@
-"use client"
-
 import ProjectList from "./components/ProjectList";
-import { useSearchProjects } from "./hooks/useSearchProjects";
+import type { IProject } from "./model";
 
-export default function Project() {
-    const{projects,isLoading,error}=useSearchProjects("")
-
+export default function Project({ projects }: { projects: IProject[] }) {
   return (
     <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">
       <div className="flex w-full flex-col items-center gap-2 text-center">
@@ -17,9 +13,7 @@ export default function Project() {
         </p>
       </div>
 
-      {/* <Suspense fallback={<div>Loading...</div>}> */}
-        <ProjectList projects={projects} isLoading={isLoading} error={error} />
-      {/* </Suspense> */}
+      <ProjectList projects={projects} />
     </div>
   );
 }
