@@ -5,11 +5,19 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { DatePicker } from "@/components/ui/date-picker"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
 import SkillsInput from "@/features/project/components/SkillsInput"
 import PointersInput from "./PointersInput"
 import { useExperienceForm, type ExperienceWithId } from "../hooks/useExperienceForm"
+import { EMPLOYMENT_TYPE, WORK_MODE } from "../constant"
 
 type ExperienceFormProps = {
   experience?: ExperienceWithId | null
@@ -18,6 +26,7 @@ type ExperienceFormProps = {
 
 const labelClass = "text-xs"
 const inputClass = "h-7 text-xs"
+const selectTriggerClass = "h-7 w-full text-xs"
 
 const steps = [
   { title: "Role & timeline", hint: "Where and when you worked." },
@@ -107,6 +116,52 @@ export default function ExperienceForm({ experience, onSuccess }: ExperienceForm
                 value={values.position}
                 onChange={(e) => setField("position", e.target.value)}
               />
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <Label htmlFor="type" className={labelClass}>
+                Type
+              </Label>
+              <Select
+                value={values.type}
+                onValueChange={(v) => setField("type", v as typeof values.type)}
+                disabled={loading}
+              >
+                <SelectTrigger id="type" size="sm" className={selectTriggerClass}>
+                  <SelectValue className="capitalize" placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.values(EMPLOYMENT_TYPE).map((t) => (
+                    <SelectItem key={t} value={t} className="text-xs capitalize">
+                      {t}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <Label htmlFor="mode" className={labelClass}>
+                Mode
+              </Label>
+              <Select
+                value={values.mode}
+                onValueChange={(v) => setField("mode", v as typeof values.mode)}
+                disabled={loading}
+              >
+                <SelectTrigger id="mode" size="sm" className={selectTriggerClass}>
+                  <SelectValue className="capitalize" placeholder="Select mode" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.values(WORK_MODE).map((m) => (
+                    <SelectItem key={m} value={m} className="text-xs capitalize">
+                      {m}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

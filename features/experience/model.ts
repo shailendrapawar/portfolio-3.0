@@ -1,5 +1,7 @@
 import { Schema, model, models, InferSchemaType } from "mongoose"
 
+import { EMPLOYMENT_TYPE, WORK_MODE } from "./constant"
+
 const workExperienceSchema = new Schema({
   company: {
     type: String,
@@ -8,6 +10,20 @@ const workExperienceSchema = new Schema({
   position: {
     type: String,
     required: true,
+  },
+  // Employment type: full-time or internship.
+  type: {
+    type: String,
+    enum: Object.values(EMPLOYMENT_TYPE),
+    required: true,
+    default: EMPLOYMENT_TYPE.FULL_TIME,
+  },
+  // Work mode: on-site, hybrid, or remote.
+  mode: {
+    type: String,
+    enum: Object.values(WORK_MODE),
+    required: true,
+    default: WORK_MODE.ON_SITE,
   },
   startDate: {
     type: Date,

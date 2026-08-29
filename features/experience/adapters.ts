@@ -6,6 +6,9 @@ export type IWorkExpirienceItem = {
   order: number
   company: string
   position: string
+  // Employment type (full-time/internship) and work mode (on-site/hybrid/remote).
+  type: string
+  mode: string
   startDate: string
   endDate?: string
   description: string
@@ -38,6 +41,8 @@ export function toTimelineItems(
     order: experiences.length - index,
     company: exp.company,
     position: exp.position,
+    type: exp.type,
+    mode: exp.mode,
     startDate: formatMonthYear(exp.startDate),
     endDate: exp.endDate ? formatMonthYear(exp.endDate) : undefined,
     description: exp.description,

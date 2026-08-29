@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import type { ICreateWorkExperiencePayload } from "../validators"
 import type { IWorkExperience } from "../model"
+import { EMPLOYMENT_TYPE, WORK_MODE } from "../constant"
 
 export type ExperienceWithId = IWorkExperience & { _id: string }
 
@@ -28,6 +29,8 @@ type ApiResponse<T> = {
 const emptyValues: ExperienceFormValues = {
   company: "",
   position: "",
+  type: EMPLOYMENT_TYPE.FULL_TIME,
+  mode: WORK_MODE.ON_SITE,
   startDate: undefined,
   endDate: undefined,
   description: "",
@@ -43,6 +46,8 @@ function toValues(experience: ExperienceWithId | null): ExperienceFormValues {
   return {
     company: experience.company,
     position: experience.position,
+    type: experience.type,
+    mode: experience.mode,
     // Dates arrive as ISO strings over the API; normalize to Date objects.
     startDate: experience.startDate ? new Date(experience.startDate) : undefined,
     endDate: experience.endDate ? new Date(experience.endDate) : undefined,

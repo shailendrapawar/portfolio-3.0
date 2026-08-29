@@ -99,12 +99,18 @@ export default function ExperienceTimeline({
                   )}
                 </div>
 
-                <h4 className="text-base font-semibold text-foreground">
-                  {item.position}
-                </h4>
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="text-base font-semibold text-foreground">
+                    {item.position}
+                  </h4>
+                  <span className="shrink-0 text-[11px] font-medium text-muted-foreground capitalize">
+                    {item.type} · {item.mode}
+                  </span>
+                </div>
                 <p className="text-sm font-medium text-secondary">
                   {item.company}
                 </p>
+
                 {item.description && (
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {item.description}
