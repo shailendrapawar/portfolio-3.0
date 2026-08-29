@@ -85,10 +85,20 @@ export function useExperienceForm({
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  // Re-seed the form whenever the target experience changes.
+  // Multi-step navigation. The form is split into TOTAL_STEPS titled groups;
+  // `step` is the current 0-based index.
+  const TOTAL_STEPS = 3
+  const [step, setStep] = useState(0)
+  const isFirstStep = step === 0
+  const isLastStep = step === TOTAL_STEPS - 1
+  const next = () => setStep((s) => Math.min(s + 1, TOTAL_STEPS - 1))
+  const back = () => setStep((s) => Math.max(s - 1, 0))
+
+  // Re-seed the form (and restart at step 1) whenever the target changes.
   useEffect(() => {
     setValues(toValues(experience))
     setError("")
+    setStep(0)
   }, [experience])
 
   const setField = <K extends keyof ExperienceFormValues>(
@@ -162,5 +172,12 @@ export function useExperienceForm({
     loading,
     isEditing,
     handleSubmit,
+    // Step navigation
+    step,
+    totalSteps: TOTAL_STEPS,
+    isFirstStep,
+    isLastStep,
+    next,
+    back,
   }
 }
