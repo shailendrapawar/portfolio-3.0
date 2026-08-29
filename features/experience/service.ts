@@ -44,6 +44,8 @@ export class WorkExperienceService extends DBRepository {
   static set(payload: any, entity: IWorkExperience): IWorkExperience {
     if (payload?.company !== undefined) entity.company = payload.company
     if (payload?.position !== undefined) entity.position = payload.position
+    if (payload?.type !== undefined) entity.type = payload.type
+    if (payload?.mode !== undefined) entity.mode = payload.mode
     if (payload?.startDate !== undefined) entity.startDate = payload.startDate
     if (payload?.endDate !== undefined) entity.endDate = payload.endDate
     if (payload?.description !== undefined) entity.description = payload.description
