@@ -17,7 +17,7 @@ async function Landing() {
   const designation = profile?.designation || "Full Stack Developer";
   const bio =
     profile?.bio?.trim() ||
-    "MERN stack wizard , with a knack for real-time features, and seemless user experience";
+    "Building scalable systems, real-time applications, and seamless user experiences.";
 
   return (
     <div className="relative flex min-h-[calc(100vh-80px)] justify-center">

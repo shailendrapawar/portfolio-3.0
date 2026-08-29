@@ -11,6 +11,7 @@ import ExperienceManager from "@/features/experience/components/ExperienceManage
 import MessageManager from "@/features/message/components/MessageManager"
 import ProfileInfoForm from "@/features/auth/components/ProfileInfoForm"
 import ProfilePictureForm from "@/features/auth/components/ProfilePictureForm"
+import ResetPasswordForm from "@/features/auth/components/ResetPasswordForm"
 import { useUnreadMessagesCount } from "@/features/message/hooks/useUnreadMessagesCount"
 
 type Tab = "projects" | "experience" | "messages" | "profile"
@@ -101,6 +102,7 @@ export default function AdminManager() {
         <>
           <ProfilePictureForm />
           <ProfileInfoForm />
+          <ResetPasswordForm />
         </>
       )}
     </div>

@@ -18,3 +18,17 @@ export const updateProfilePayload = z.object({
     .optional(),
 })
 export type IUpdateProfilePayload = z.infer<typeof updateProfilePayload>
+
+// Reset the signed-in user's password from the profile section. The current
+// password is intentionally NOT required — the httpOnly session already proves
+// identity. `confirmPassword` must match to guard against typos.
+export const resetPasswordPayload = z
+  .object({
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  })
+export type IResetPasswordPayload = z.infer<typeof resetPasswordPayload>

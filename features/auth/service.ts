@@ -5,7 +5,11 @@ import { DBRepository } from "@/lib/db/db.repository"
 import { ApiError } from "@/lib/api/error"
 import { cloudinaryService } from "@/lib/providers/cloudinary"
 import { UploadService } from "@/features/upload/service"
-import { ILoginPayload, IUpdateProfilePayload } from "./validators"
+import {
+  ILoginPayload,
+  IResetPasswordPayload,
+  IUpdateProfilePayload,
+} from "./validators"
 import { UserModel } from "./model"
 
 export class AuthService extends DBRepository {
@@ -65,7 +69,26 @@ export class AuthService extends DBRepository {
     return safeUser
   }
 
-  //3: public profile for the landing + About Me sections (single-admin portfolio)
+  //3: reset the authenticated user's password (no current password required —
+  // identity is already proven by the httpOnly session)
+  static async resetPassword(
+    userId: string,
+    payload: IResetPasswordPayload
+  ) {
+    await connectDB()
+
+    const user = await UserModel.findById(userId)
+    if (!user) {
+      throw new ApiError(404, "User not found")
+    }
+
+    user.password = await bcrypt.hash(payload.newPassword, 10)
+    await user.save()
+
+    return { success: true }
+  }
+
+  //4: public profile for the landing + About Me sections (single-admin portfolio)
   static async getPublicProfile() {
     await connectDB()
 

@@ -9,7 +9,12 @@ export const metadata: Metadata = {
   title: "Shailendra Pawar | Full Stack Developer",
   description:
     "Portfolio of Shailendra Pawar — a MERN / full-stack developer.",
-  icons: { icon: "/s-letter.png" },
+  icons: {
+    icon: [
+      { url: "/s-letter-light.png", media: "(prefers-color-scheme: light)" },
+      { url: "/s-letter-dark.png", media: "(prefers-color-scheme: dark)" },
+    ],
+  },
 }
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'})

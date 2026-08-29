@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { INavItem, navItems } from "../lib/data/navItems";
 import { TbMenu3, TbX, TbSettings } from "react-icons/tb";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useAuthState } from "@/features/auth/hooks/useAuthState";
 export default function Navbar() {
@@ -12,6 +13,16 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const { isAuthenticated } = useAuthState();
+  const { resolvedTheme } = useTheme();
+
+  // Avoid hydration mismatch: render the default logo until mounted, then
+  // swap to the theme-appropriate one (light-colored icon on dark bg).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const logoSrc =
+    mounted && resolvedTheme === "dark"
+      ? "/s-letter-dark.png"
+      : "/s-letter-light.png";
 
   // Show the Admin link only to authenticated users.
   const items: INavItem[] = isAuthenticated
@@ -28,7 +39,7 @@ export default function Navbar() {
       <section className="flex justify-between items-center gap-5 h-full rounded-full px-5 relative backdrop-blur-md text-foreground">
       <Link href="/" aria-label="Home" className="ml-3 flex items-center">
         <Image
-          src="/s-letter.png"
+          src={logoSrc}
           alt="Shailendra Pawar logo"
           width={40}
           height={40}
