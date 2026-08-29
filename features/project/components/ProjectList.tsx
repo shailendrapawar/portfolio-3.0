@@ -32,17 +32,17 @@ export default function ProjectList({ projects }: IProjectListProps) {
 
   return (
     <div className="flex min-h-[calc(100vh-40vh)] w-full flex-col items-center gap-8">
-      <nav className="flex flex-wrap justify-center gap-1 rounded-full border border-border bg-muted p-1">
+      <nav className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
         {filters.map((filter) => (
           <button
             key={filter.value}
             type="button"
             onClick={() => setActive(filter.value)}
             className={cn(
-              "rounded-full px-4 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+              "rounded-full border px-4 py-2 text-xs font-medium shadow-lg backdrop-blur-xl transition-colors sm:text-sm",
               active === filter.value
-                ? "bg-primary text-white shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                ? "border-primary bg-primary text-white shadow-sm"
+                : "border-border bg-card/60 text-muted-foreground hover:text-foreground"
             )}
           >
             {filter.label}

@@ -23,8 +23,9 @@ export default function Navbar() {
 
 
   return (
-    <main className="h-20  w-full relative py-2 px-4 z-50">
-      <section className="flex justify-between items-center gap-5 h-full rounded-full px-5 relative bg-primary text-primary-foreground">
+    <>
+    <main className="sticky top-0 mx-auto h-20 w-full max-w-250 relative py-2 px-4 z-50 backdrop-blur-md">
+      <section className="flex justify-between items-center gap-5 h-full rounded-full px-5 relative backdrop-blur-md text-foreground">
       <Link href="/" aria-label="Home" className="ml-3 flex items-center">
         <Image
           src="/s-letter.png"
@@ -41,49 +42,51 @@ export default function Navbar() {
             key={route.path}
             href={route.path}
             className={cn(
-              "border-b-2 border-transparent transition-colors hover:text-white w-20 text-center",
-              isActive(route.path) && "border-white border-b-2 text-white"
+              "border-b-2 border-transparent transition-colors text-muted-foreground hover:text-foreground w-20 text-center",
+              isActive(route.path) && "border-primary border-b-2 text-foreground"
             )}
           >
             {route.label}
           </Link>
         ))}
       </nav>
-      {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-black/80 text-white backdrop-blur-md">
-          <button
-            type="button"
-            aria-label="Close menu"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="absolute top-6 right-6"
-          >
-            <TbX className="size-8 cursor-pointer" />
-          </button>
-
-          <nav className="flex flex-col items-start gap-6">
-            {items.map((route:INavItem) => (
-              <Link
-                key={route.path}
-                href={route.path}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={cn(
-                  "inline-flex items-center gap-2.5 border-b-2 border-transparent pb-1.5 text-2xl font-medium transition-colors hover:text-white/80",
-                  isActive(route.path) && "border-white text-white"
-                )}
-              >
-                <route.icon className="size-6" />
-                {route.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      )}
 
       <aside className="mr-3 md:hidden" onClick={() => setIsMobileMenuOpen(true)}>
        <TbMenu3 className="size-8 cursor-pointer" />
       </aside>
-      
+
       </section>
     </main>
+
+    {isMobileMenuOpen && (
+      <div className="md:hidden fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-black/80 text-white backdrop-blur-md">
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={() => setIsMobileMenuOpen(false)}
+          className="absolute top-6 right-6"
+        >
+          <TbX className="size-8 cursor-pointer" />
+        </button>
+
+        <nav className="flex flex-col items-start gap-6">
+          {items.map((route:INavItem) => (
+            <Link
+              key={route.path}
+              href={route.path}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={cn(
+                "inline-flex items-center gap-2.5 border-b-2 border-transparent pb-1.5 text-2xl font-medium transition-colors hover:text-white/80",
+                isActive(route.path) && "border-white text-white"
+              )}
+            >
+              <route.icon className="size-6" />
+              {route.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    )}
+    </>
   )
 }

@@ -182,7 +182,7 @@ function InteractiveView() {
       </div>
 
       {/* Category selector: hover on desktop, tap on touch devices */}
-      <nav className="mx-auto flex w-full max-w-[340px] items-center justify-between rounded-full border border-border bg-card/60 px-1 py-1 shadow-lg backdrop-blur-xl sm:max-w-[480px] sm:px-2">
+      <nav className="mx-auto flex flex-wrap items-center justify-center gap-2 sm:gap-3">
         {categories.map((item) => {
           const isActive = activeCategory === item.key;
 
@@ -198,19 +198,13 @@ function InteractiveView() {
                 )
               }
               className={cn(
-                "relative flex-1 rounded-full px-2 py-2 text-center text-[11px] font-medium transition-colors sm:text-sm",
+                "rounded-full border px-4 py-2 text-center text-[11px] font-medium shadow-lg backdrop-blur-xl transition-colors sm:text-sm",
                 isActive
-                  ? "text-accent"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "border-accent/60 bg-accent/10 text-accent"
+                  : "border-border bg-card/60 text-muted-foreground hover:text-foreground"
               )}
             >
               {item.title}
-              <span
-                className={cn(
-                  "absolute bottom-1 left-1/2 h-0.5 -translate-x-1/2 rounded-full bg-accent transition-all duration-300",
-                  isActive ? "w-3/5 opacity-100" : "w-0 opacity-0"
-                )}
-              />
             </button>
           );
         })}
