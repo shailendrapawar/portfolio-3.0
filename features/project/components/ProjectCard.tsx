@@ -4,6 +4,9 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { memo, useEffect, useMemo, useState } from "react";
 import { FaLink, FaGithub } from "react-icons/fa6";
+
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { cn } from "@/lib/utils";
 import { IProject } from "../model";
 
 
@@ -11,6 +14,7 @@ import { IProject } from "../model";
 function ProjectCard({ data }: { data: IProject }) {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const isMobile = useIsMobile();
 
   // Theme is only known on the client; avoid a hydration mismatch by rendering
   // the light badge until the resolved theme is available.
@@ -57,8 +61,16 @@ function ProjectCard({ data }: { data: IProject }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent" />
       </div>
 
-      {/* Top action buttons */}
-      <div className="absolute inset-x-4 top-4 z-10 flex -translate-y-2 justify-between opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+      {/* Top action buttons — revealed on hover on desktop, always visible on
+          touch devices (which have no hover). */}
+      <div
+        className={cn(
+          "absolute inset-x-4 top-4 z-10 flex justify-between transition-all duration-300",
+          isMobile
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+        )}
+      >
         {data.live && (
           <a
             href={data.live}

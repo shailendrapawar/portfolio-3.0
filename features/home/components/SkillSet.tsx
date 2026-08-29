@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 
 import { TechIcon } from "@/components/TechIcon";
 import { Reveal } from "@/components/animations";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { cn } from "@/lib/utils";
 import {
   backendSkills,
@@ -144,6 +145,7 @@ function GroupedView() {
 function InteractiveView() {
   const [activeCategory, setActiveCategory] = useState<CategoryKey | null>(null);
   const iconFor = useSkillIcon();
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex w-full flex-col items-center gap-8 animate-in fade-in duration-500">
@@ -191,8 +193,11 @@ function InteractiveView() {
             <button
               key={item.key}
               type="button"
-              onMouseEnter={() => setActiveCategory(item.key)}
-              onMouseLeave={() => setActiveCategory(null)}
+              // Hover only on desktop. On touch devices a tap fires mouseenter
+              // *then* click, which would immediately toggle the selection back
+              // off — so mobile relies on the click toggle alone.
+              onMouseEnter={isMobile ? undefined : () => setActiveCategory(item.key)}
+              onMouseLeave={isMobile ? undefined : () => setActiveCategory(null)}
               onClick={() =>
                 setActiveCategory((prev) =>
                   prev === item.key ? null : item.key
