@@ -1,13 +1,13 @@
-"use client";
-
 import { Reveal } from "@/components/animations";
 import ExperienceTimeline from "./components/ExperienceTimeline";
-import { useSearchExperience } from "./hooks/useSearchExperience";
 import { toTimelineItems } from "./adapters";
+import type { IWorkExperience } from "./model";
 
-export default function Experience() {
-  const { experiences, isLoading, error } = useSearchExperience();
-
+export default function Experience({
+  experiences,
+}: {
+  experiences: IWorkExperience[];
+}) {
   const items = toTimelineItems(experiences);
 
   return (
@@ -21,15 +21,7 @@ export default function Experience() {
         </p>
       </Reveal>
 
-      {isLoading && (
-        <p className="text-sm text-muted-foreground">Loading experience…</p>
-      )}
-      {error && (
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
-      )}
-      {!isLoading && !error && items.length === 0 && (
+      {items.length === 0 && (
         <p className="text-sm text-muted-foreground">No experience yet.</p>
       )}
 

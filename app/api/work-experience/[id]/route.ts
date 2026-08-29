@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache"
+
 import { WorkExperienceService } from "@/features/experience/service"
 import { updateWorkExperiencePayload } from "@/features/experience/validators"
 import { requireAuth } from "@/lib/auth/guard"
@@ -35,6 +37,11 @@ export async function PATCH(request: Request, { params }: RouteContext) {
 
     const item = await WorkExperienceService.update(id, parsed.data)
 
+    // Bust the ISR cache so the edit shows immediately (/ = latest two,
+    // /experience = full timeline).
+    revalidatePath("/")
+    revalidatePath("/experience")
+
     return sendResponse(200, "Work experience updated successfully", { item })
   } catch (error) {
     return handleError(error)
@@ -49,6 +56,11 @@ export async function DELETE(_request: Request, { params }: RouteContext) {
     const { id } = await params
 
     const item = await WorkExperienceService.remove(id)
+
+    // Bust the ISR cache so the removal shows immediately (/ = latest two,
+    // /experience = full timeline).
+    revalidatePath("/")
+    revalidatePath("/experience")
 
     return sendResponse(200, "Work experience deleted permanently", { item })
   } catch (error) {

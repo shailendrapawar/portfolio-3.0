@@ -23,9 +23,11 @@ export async function PATCH(request: Request) {
 
     const user = await AuthService.updateProfile(auth.session.sub, parsed.data)
 
-    // Bust the ISR cache for the home page so the new picture/name/bio show
-    // immediately instead of waiting for the 60s revalidate window.
-    revalidatePath("/")
+    // Bust the ISR cache so the new name/picture/bio show immediately instead
+    // of waiting for the 60s revalidate window. The home page uses the full
+    // profile; every public page shows the name in the footer, so revalidate
+    // the whole public layout tree.
+    revalidatePath("/", "layout")
 
     return sendResponse(200, "Profile updated", { user })
   } catch (error) {

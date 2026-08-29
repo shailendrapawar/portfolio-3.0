@@ -1,3 +1,5 @@
+import { revalidatePath } from "next/cache"
+
 import { WorkExperienceService } from "@/features/experience/service"
 import {
   createWorkExperiencePayload,
@@ -42,6 +44,11 @@ export async function POST(request: Request) {
     }
 
     const item = await WorkExperienceService.create(parsed.data)
+
+    // Bust the ISR cache so the new entry shows immediately (/ = latest two,
+    // /experience = full timeline).
+    revalidatePath("/")
+    revalidatePath("/experience")
 
     return sendResponse(201, "Work experience created successfully", { item })
   } catch (error) {

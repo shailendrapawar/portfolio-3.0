@@ -16,8 +16,9 @@ export default function Navbar() {
   const { isAuthenticated } = useAuthState();
   const { resolvedTheme } = useTheme();
 
-  // Avoid hydration mismatch: render the default logo until mounted, then
-  // swap to the theme-appropriate one (light-colored icon on dark bg).
+  // Avoid hydration mismatch: render the default logo until mounted, then swap
+  // to the theme-appropriate one. The files are named by mode: -dark is the
+  // white logo (for dark mode), -light is the black logo (for light mode).
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const logoSrc =
