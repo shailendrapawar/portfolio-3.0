@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import MagicBall from "@/components/MagicBall";
+import { Animated, FadeIn, Stagger, StaggerItem } from "@/components/animations";
 
 import sendEmailService from "./services/sendEmailService";
 
@@ -86,15 +87,32 @@ export default function Contact() {
   return (
     <div className="relative z-10 flex min-h-[calc(100vh-5rem)] w-full items-center justify-center overflow-x-clip p-5">
       <main className="relative z-10 flex w-full max-w-200 items-center justify-center">
-        <section className="relative z-10 flex w-full max-w-160 flex-col items-start gap-5 rounded-2xl border border-border bg-card/60 p-6 shadow-lg backdrop-blur-xl sm:p-8">
-          <h3 className="text-3xl font-semibold text-accent">Get in Touch🫣</h3>
+        <Animated
+          type="scaleIn"
+          duration={0.55}
+          className="relative z-10 flex w-full max-w-160 flex-col items-start gap-5 rounded-2xl border border-border bg-card/60 p-6 shadow-lg backdrop-blur-xl sm:p-8"
+        >
+          <Stagger inView={false} delay={0.15} className="w-full">
+            <StaggerItem>
+              <h3 className="text-3xl font-semibold text-accent">
+                Get in Touch🫣
+              </h3>
+            </StaggerItem>
 
-          <p className="text-xl text-foreground">
-            Hello,
-            <br />
-            <span className="text-secondary">Feel free to connect</span>
-          </p>
+            <StaggerItem>
+              <p className="mt-4 text-xl text-foreground">
+                Hello,
+                <br />
+                <span className="text-secondary">Feel free to connect</span>
+              </p>
+            </StaggerItem>
+          </Stagger>
 
+          <FadeIn
+            delay={0.35}
+            direction="up"
+            className="flex w-full justify-center"
+          >
           <form
             onSubmit={handleSubmit}
             className="z-10 flex w-full max-w-100 flex-col gap-3 self-center sm:w-[90%]"
@@ -165,23 +183,32 @@ export default function Contact() {
               {loading ? "Sending..." : "SEND"}
             </Button>
           </form>
-        </section>
+          </FadeIn>
+        </Animated>
 
-        {/* Decorative floating magic balls */}
-        <MagicBall extraClasses="-z-10 top-16 right-[15%] magicBall-anime" delay={0} />
-        <MagicBall
-          extraClasses="-z-10 bottom-20 left-[5%] md:left-[15%] magicBall-anime"
-          delay={0.5}
-        />
-        <MagicBall
-          extraClasses="-z-10 top-52 right-[5%] md:right-[15%] magicBall-anime"
-          delay={1.2}
-        />
-        <MagicBall
-          extraClasses="-z-10 bottom-5 right-[20%] md:right-[30%] magicBall-anime"
-          delay={1.9}
-        />
-        <MagicBall extraClasses="-z-10 top-40 left-[25%] magicBall-anime" delay={0.3} />
+        {/* Decorative floating magic balls — revealed only after the card
+            has finished animating in, so they don't pop in beforehand. */}
+        <FadeIn
+          direction="none"
+          delay={0.9}
+          duration={0.6}
+          className="pointer-events-none absolute inset-0 -z-10"
+        >
+          <MagicBall extraClasses="-z-10 top-16 right-[15%] magicBall-anime" delay={0} />
+          <MagicBall
+            extraClasses="-z-10 bottom-20 left-[5%] md:left-[15%] magicBall-anime"
+            delay={0.5}
+          />
+          <MagicBall
+            extraClasses="-z-10 top-52 right-[5%] md:right-[15%] magicBall-anime"
+            delay={1.2}
+          />
+          <MagicBall
+            extraClasses="-z-10 bottom-5 right-[20%] md:right-[30%] magicBall-anime"
+            delay={1.9}
+          />
+          <MagicBall extraClasses="-z-10 top-40 left-[25%] magicBall-anime" delay={0.3} />
+        </FadeIn>
       </main>
     </div>
   );

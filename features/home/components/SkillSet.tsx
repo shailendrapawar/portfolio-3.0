@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
 import { TechIcon } from "@/components/TechIcon";
+import { Reveal } from "@/components/animations";
 import { cn } from "@/lib/utils";
 import {
   backendSkills,
@@ -50,12 +51,12 @@ export default function SkillSet() {
 
   return (
     <div className="mx-auto flex w-full max-w-250 flex-col items-center gap-8 p-4">
-      <div className="flex flex-col items-center gap-2 text-center">
+      <Reveal className="flex flex-col items-center gap-2 text-center">
         <h2 className="text-2xl font-semibold text-accent sm:text-3xl">
           My Stack
         </h2>
         <ViewToggle view={view} onChange={setView} />
-      </div>
+      </Reveal>
 
       {view === "grouped" ? <GroupedView /> : <InteractiveView />}
     </div>

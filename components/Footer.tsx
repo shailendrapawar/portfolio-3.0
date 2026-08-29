@@ -1,6 +1,12 @@
 import { footerLinks } from "@/lib/data/socialItems";
+import { AuthService } from "@/features/auth/service";
 
-export default function Footer() {
+export default async function Footer() {
+  // Fetched server-side (like the landing/About sections) so the name stays in
+  // sync with the profile and the page remains cacheable.
+  const profile = await AuthService.getPublicProfile();
+  const name = profile?.name || "Shailendra Pawar";
+
   return (
     <footer className="flex h-50 w-full flex-col items-center justify-center gap-5 bg-black text-gray-500">
       <section className="flex w-full max-w-100 items-center justify-center gap-3">
@@ -18,7 +24,7 @@ export default function Footer() {
       </section>
 
       <h3 className="text-sm">
-        © 2025 Shailendra Pawar. All rights reserved.💀
+        © 2026 {name}. All rights reserved.💀
       </h3>
     </footer>
   );

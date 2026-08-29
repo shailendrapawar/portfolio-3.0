@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { cn } from "@/lib/utils";
+import { Reveal, Stagger, StaggerItem } from "@/components/animations";
 
 import ProjectCard from "./ProjectCard";
 import { IProject } from "../model";
@@ -32,7 +33,7 @@ export default function ProjectList({ projects }: IProjectListProps) {
 
   return (
     <div className="flex min-h-[calc(100vh-40vh)] w-full flex-col items-center gap-8">
-      <nav className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+      <Reveal className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
         {filters.map((filter) => (
           <button
             key={filter.value}
@@ -48,18 +49,23 @@ export default function ProjectList({ projects }: IProjectListProps) {
             {filter.label}
           </button>
         ))}
-      </nav>
+      </Reveal>
 
-      <div className="flex w-full flex-wrap justify-center gap-6 animate-in fade-in duration-500">
+      {/* Keyed on `active` so switching filters replays the stagger. */}
+      <Stagger
+        key={active}
+        inView={false}
+        className="flex w-full flex-wrap justify-center gap-6"
+      >
         {visible.map((project) => (
-          <div
+          <StaggerItem
             key={project.title}
             className="flex w-full justify-center sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
           >
             <ProjectCard data={project} />
-          </div>
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
     </div>
   );
 }

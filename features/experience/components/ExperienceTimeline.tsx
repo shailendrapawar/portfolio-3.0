@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { TechIcon } from "@/components/TechIcon";
+import { Reveal } from "@/components/animations";
 import { type IWorkExpirienceItem } from "../adapters";
 
 // LinkedIn may be stored as a full URL or a bare handle; normalize to a URL.
@@ -42,7 +43,7 @@ export default function ExperienceTimeline({
   const sorted = [...items].sort((a, b) => b.order - a.order);
 
   return (
-    <ol className="relative mx-auto w-full max-w-250 py-4">
+    <ol className="relative mx-auto w-full max-w-250 overflow-x-clip py-4">
       {/* Center line with an upward-flowing highlight */}
       <div
         aria-hidden
@@ -79,13 +80,14 @@ export default function ExperienceTimeline({
             </span>
 
             {/* Card */}
-            <div
+            <Reveal
+              direction={isLeft ? "right" : "left"}
               className={cn(
                 "min-w-0 pl-12 md:pl-0",
                 isLeft ? "md:col-start-1" : "md:col-start-2"
               )}
             >
-              <div className="group relative flex animate-in fade-in slide-in-from-bottom-2 flex-col gap-2 rounded-2xl border border-border bg-gradient-to-br from-card to-muted p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_10px_30px_rgba(37,99,235,0.25)]">
+              <div className="group relative flex flex-col gap-2 rounded-2xl border border-border bg-gradient-to-br from-card to-muted p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_10px_30px_rgba(37,99,235,0.25)]">
                 <div className="flex flex-wrap items-center justify-end gap-2">
                   <span className="text-xs font-medium text-accent">
                     {item.startDate} – {item.isCurrent ? "Present" : item.endDate}
@@ -166,7 +168,7 @@ export default function ExperienceTimeline({
                   </div>
                 )}
               </div>
-            </div>
+            </Reveal>
           </li>
         );
       })}
