@@ -4,35 +4,62 @@ import { useRouter, usePathname } from "next/navigation"
 import { useAuthStore } from "../store"
 
 /**
- * Guards a private route on the client: waits for the persisted auth store to
- * rehydrate, then redirects to `/auth` when there is no auth state.
+ * Guards a private route on the client. Verifies the real httpOnly session
+ * cookie via /api/auth/session (the source of truth) rather than the persisted
+ * store, which stays `true` after the JWT expires. When there is no valid
+ * session it clears the stale store and redirects to `/auth`.
  *
- * `isReady` is false until rehydration completes so the UI can avoid a flash
- * of protected content (or a wrongful redirect) on refresh.
+ * Re-checks on window focus so a session that expires while the tab sits open
+ * also bounces the user to login the next time they return to it.
+ *
+ * `isReady` is false until the first check resolves, so protected content never
+ * flashes (nor does a wrongful redirect fire) before the session is known.
  */
 export function useProtectRoute() {
   const router = useRouter()
   const pathname = usePathname()
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
-  // Start false so the initial (server) render never touches the persist API,
-  // which is unavailable during prerendering. Hydration is resolved on the
-  // client inside the effect below.
   const [isReady, setIsReady] = useState(false)
+  const [sessionValid, setSessionValid] = useState(false)
 
   useEffect(() => {
-    const unsub = useAuthStore.persist.onFinishHydration(() => setIsReady(true))
-    if (useAuthStore.persist.hasHydrated()) setIsReady(true)
-    return unsub
+    let active = true
+
+    const check = () =>
+      fetch("/api/auth/session", { cache: "no-store" })
+        .then((res) => res.json())
+        .then((body) => {
+          if (!active) return
+          const valid = Boolean(body?.data?.authenticated)
+          setSessionValid(valid)
+          // Drop stale persisted auth state once the cookie session is gone.
+          if (!valid && useAuthStore.getState().isAuthenticated) {
+            useAuthStore.getState().logout()
+          }
+        })
+        .catch(() => {
+          if (active) setSessionValid(false)
+        })
+        .finally(() => {
+          if (active) setIsReady(true)
+        })
+
+    check()
+
+    const onFocus = () => check()
+    window.addEventListener("focus", onFocus)
+    return () => {
+      active = false
+      window.removeEventListener("focus", onFocus)
+    }
   }, [])
 
   useEffect(() => {
     if (!isReady) return
-    if (!isAuthenticated) {
-      const loginUrl = `/auth?from=${encodeURIComponent(pathname)}`
-      router.replace(loginUrl)
+    if (!sessionValid) {
+      router.replace(`/auth?from=${encodeURIComponent(pathname)}`)
     }
-  }, [isReady, isAuthenticated, pathname, router])
+  }, [isReady, sessionValid, pathname, router])
 
-  return { isReady, isAuthenticated }
+  return { isReady, isAuthenticated: isReady && sessionValid }
 }

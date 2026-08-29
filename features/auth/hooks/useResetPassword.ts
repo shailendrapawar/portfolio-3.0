@@ -13,7 +13,7 @@ type ApiResponse<T> = {
  * loading/error/success flags. No current password is required — the session
  * cookie proves identity server-side.
  */
-export function useResetPassword() {
+export function useResetPassword(onSuccess?: () => void) {
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [saving, setSaving] = useState(false)
@@ -58,6 +58,7 @@ export function useResetPassword() {
       setSuccess("Password updated.")
       setNewPassword("")
       setConfirmPassword("")
+      onSuccess?.()
     } catch {
       setError("Something went wrong. Please try again.")
     } finally {

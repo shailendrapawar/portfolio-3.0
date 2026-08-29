@@ -5,7 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useResetPassword } from "../hooks/useResetPassword";
 
-export default function ResetPasswordForm() {
+/**
+ * Password fields only — no card/heading chrome, so it drops cleanly inside a
+ * Modal (which provides its own title/frame). `onSuccess` fires after the
+ * password is updated (e.g. to close the modal).
+ */
+export default function ResetPasswordForm({
+  onSuccess,
+}: {
+  onSuccess?: () => void;
+}) {
   const {
     newPassword,
     setNewPassword,
@@ -15,12 +24,10 @@ export default function ResetPasswordForm() {
     error,
     success,
     handleSave,
-  } = useResetPassword();
+  } = useResetPassword(onSuccess);
 
   return (
-    <div className="mx-auto mt-6 flex w-full max-w-md flex-col gap-4 rounded-2xl border border-border bg-card p-6">
-      <h2 className="text-lg font-semibold text-foreground">Reset password</h2>
-
+    <div className="flex w-full flex-col gap-4">
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="new-password">New password</Label>
         <Input

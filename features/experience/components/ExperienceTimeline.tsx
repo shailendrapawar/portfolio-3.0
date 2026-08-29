@@ -102,9 +102,25 @@ export default function ExperienceTimeline({
                 <h4 className="text-base font-semibold text-foreground">
                   {item.position}
                 </h4>
-                <p className="text-sm font-medium text-secondary">
-                  {item.company}
-                </p>
+                {item.linkedin ? (
+                  <a
+                    href={linkedinHref(item.linkedin)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/company inline-flex w-fit items-center gap-1.5 text-sm font-medium text-secondary transition-colors hover:text-primary"
+                  >
+                    {item.company}
+                    <TechIcon
+                      icon="mdi:linkedin"
+                      size={15}
+                      className="opacity-70 transition-opacity group-hover/company:opacity-100"
+                    />
+                  </a>
+                ) : (
+                  <p className="text-sm font-medium text-secondary">
+                    {item.company}
+                  </p>
+                )}
                 {item.description && (
                   <p className="text-sm leading-relaxed text-muted-foreground">
                     {item.description}
@@ -141,30 +157,18 @@ export default function ExperienceTimeline({
                   />
                 )}
 
-                {(item.linkedin || item.credentials) && (
+                {item.credentials && (
                   <div className="mt-1 flex flex-wrap items-center gap-2">
-                    {item.linkedin && (
-                      <a
-                        href={linkedinHref(item.linkedin)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
-                      >
-                        <TechIcon icon="mdi:linkedin" size={16} />
-                        LinkedIn
-                      </a>
-                    )}
-                    {item.credentials && (
-                      <a
-                        href={item.credentials}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
-                      >
-                        <TechIcon icon="mdi:certificate-outline" size={16} />
-                        Credentials
-                      </a>
-                    )}
+                    <a
+                      href={item.credentials}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/20"
+                    >
+                      <TechIcon icon="mdi:certificate-outline" size={16} />
+                      View Credentials
+                      <TechIcon icon="mdi:open-in-new" size={13} className="opacity-80" />
+                    </a>
                   </div>
                 )}
               </div>
