@@ -196,36 +196,34 @@ export default function ExperienceForm({ experience, onSuccess }: ExperienceForm
             />
           </div>
 
-          <div className="flex gap-3">
-            <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <Label htmlFor="credentials" className={labelClass}>
-                Credentials (Google Drive link)
-              </Label>
-              <Input
-                id="credentials"
-                type="url"
-                disabled={loading}
-                placeholder="https://drive.google.com/…"
-                className={inputClass}
-                value={values.credentials ?? ""}
-                onChange={(e) => setField("credentials", e.target.value)}
-              />
-            </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="credentials" className={labelClass}>
+              Credentials (Google Drive link)
+            </Label>
+            <Input
+              id="credentials"
+              type="url"
+              disabled={loading}
+              placeholder="https://drive.google.com/…"
+              className={inputClass}
+              value={values.credentials ?? ""}
+              onChange={(e) => setField("credentials", e.target.value)}
+            />
+          </div>
 
-            <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <Label htmlFor="linkedin" className={labelClass}>
-                LinkedIn (optional)
-              </Label>
-              <Input
-                id="linkedin"
-                type="url"
-                disabled={loading}
-                placeholder="https://www.linkedin.com/company/…"
-                className={inputClass}
-                value={values.linkedin ?? ""}
-                onChange={(e) => setField("linkedin", e.target.value)}
-              />
-            </div>
+          <div className="flex flex-col gap-1">
+            <Label htmlFor="linkedin" className={labelClass}>
+              LinkedIn (optional)
+            </Label>
+            <Input
+              id="linkedin"
+              type="url"
+              disabled={loading}
+              placeholder="https://www.linkedin.com/company/…"
+              className={inputClass}
+              value={values.linkedin ?? ""}
+              onChange={(e) => setField("linkedin", e.target.value)}
+            />
           </div>
         </div>
       )}
