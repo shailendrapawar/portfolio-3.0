@@ -21,7 +21,9 @@ export default function ProfilePictureForm() {
 
   return (
     <div className="mx-auto mt-6 flex w-full max-w-md flex-col items-center gap-5 rounded-2xl border border-border bg-card p-6">
-      <h2 className="text-lg font-semibold text-foreground">Profile picture</h2>
+      <h2 className="text-center text-lg font-semibold text-foreground sm:text-xl">
+        Profile picture
+      </h2>
 
       <div className="relative h-40 w-40 overflow-hidden rounded-full border border-border bg-muted">
         {shown && (

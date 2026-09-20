@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { ArrowLeft, Mail } from "lucide-react"
+import { ArrowLeft, LogOut, Mail } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import ProjectManager from "@/features/project/components/ProjectManager"
@@ -13,6 +13,7 @@ import ProfileInfoForm from "@/features/auth/components/ProfileInfoForm"
 import ProfilePictureForm from "@/features/auth/components/ProfilePictureForm"
 import ResetPasswordButton from "@/features/auth/components/ResetPasswordButton"
 import { useUnreadMessagesCount } from "@/features/message/hooks/useUnreadMessagesCount"
+import { useLogout } from "@/features/auth/hooks/useLogout"
 
 type Tab = "projects" | "experience" | "messages" | "profile"
 
@@ -36,6 +37,7 @@ export default function AdminManager() {
 
   const [active, setActive] = useState<Tab>(initial)
   const { unread, refresh } = useUnreadMessagesCount()
+  const { handleLogout, loading: loggingOut } = useLogout()
 
   // Keep the badge in sync when returning from the messages view (items there
   // may have been read/deleted).
@@ -45,17 +47,29 @@ export default function AdminManager() {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="mx-auto flex w-full max-w-3xl px-6 pt-6">
+      <div className="mx-auto flex w-full max-w-3xl gap-2 px-6 pt-6">
         <Link
           href="/"
-          className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-card py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-card py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
           Back to site
         </Link>
+
+        <button
+          type="button"
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive transition-colors hover:bg-destructive/20 disabled:pointer-events-none disabled:opacity-50 min-[450px]:px-4"
+        >
+          <LogOut className="size-4" />
+          <span className="hidden min-[450px]:inline">
+            {loggingOut ? "Logging out…" : "Logout"}
+          </span>
+        </button>
       </div>
 
-      <div className="mx-auto mt-4 flex items-center gap-2">
+      <div className="mx-auto mt-4 flex w-full max-w-3xl items-center justify-center gap-2 px-4 sm:px-6">
         <nav className="flex gap-1 rounded-full border border-border bg-muted p-1">
           {tabs.map((tab) => (
             <button
@@ -63,7 +77,7 @@ export default function AdminManager() {
               type="button"
               onClick={() => setActive(tab.value)}
               className={cn(
-                "rounded-full px-4 py-1.5 text-xs font-medium transition-colors sm:text-sm",
+                "rounded-full px-2.5 py-1.5 text-xs font-medium whitespace-nowrap transition-colors sm:px-4 sm:text-sm",
                 active === tab.value
                   ? "bg-primary text-white shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -80,7 +94,7 @@ export default function AdminManager() {
           onClick={() => setActive("messages")}
           aria-label={`Messages${unread ? ` (${unread} unread)` : ""}`}
           className={cn(
-            "relative flex size-9 items-center justify-center rounded-full border border-border transition-colors",
+            "relative flex size-9 shrink-0 items-center justify-center rounded-full border border-border transition-colors",
             active === "messages"
               ? "bg-primary text-white shadow-sm"
               : "bg-muted text-muted-foreground hover:text-foreground"
@@ -99,11 +113,11 @@ export default function AdminManager() {
       {active === "experience" && <ExperienceManager />}
       {active === "messages" && <MessageManager />}
       {active === "profile" && (
-        <>
+        <div className="w-full px-4 pb-6 sm:px-6">
           <ProfilePictureForm />
           <ProfileInfoForm />
           <ResetPasswordButton />
-        </>
+        </div>
       )}
     </div>
   )

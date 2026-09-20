@@ -37,7 +37,7 @@ export function useLogout() {
       // Only clear the auth state after a successful logout.
       clearAuth()
 
-      router.push("/auth")
+      router.push("/")
       router.refresh()
     } catch {
       setError("Something went wrong. Please try again.")

@@ -15,20 +15,23 @@ export default function ResetPasswordButton() {
 
   return (
     <div className="mx-auto mt-6 flex w-full max-w-md flex-col gap-4 rounded-2xl border border-border bg-card p-6">
-      <div className="flex flex-col gap-1">
-        <h2 className="text-lg font-semibold text-foreground">Password</h2>
-        <p className="text-sm text-muted-foreground">
-          Set a new password for your account.
-        </p>
-      </div>
+      <h2 className="text-center text-lg font-semibold text-foreground sm:text-xl">
+        Security
+      </h2>
 
-      <Button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="w-fit rounded-full"
-      >
-        Change password
-      </Button>
+      <div className="flex items-center justify-between gap-3">
+        <span className="min-w-0 text-sm font-medium text-foreground">
+          Change password
+        </span>
+
+        <Button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="shrink-0 rounded-full"
+        >
+          Change password
+        </Button>
+      </div>
 
       <Modal
         open={open}

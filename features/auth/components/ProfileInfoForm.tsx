@@ -22,10 +22,14 @@ export default function ProfileInfoForm() {
 
   return (
     <div className="mx-auto mt-6 flex w-full max-w-md flex-col gap-4 rounded-2xl border border-border bg-card p-6">
-      <h2 className="text-lg font-semibold text-foreground">Profile details</h2>
+      <h2 className="text-center text-lg font-semibold text-foreground sm:text-xl">
+        Profile details
+      </h2>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="profile-name">Name</Label>
+        <Label htmlFor="profile-name" className="text-muted-foreground">
+          Name
+        </Label>
         <Input
           id="profile-name"
           value={name}
@@ -36,7 +40,9 @@ export default function ProfileInfoForm() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="profile-designation">Designation</Label>
+        <Label htmlFor="profile-designation" className="text-muted-foreground">
+          Designation
+        </Label>
         <Input
           id="profile-designation"
           value={designation}
@@ -47,7 +53,9 @@ export default function ProfileInfoForm() {
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <Label htmlFor="profile-bio">Bio</Label>
+        <Label htmlFor="profile-bio" className="text-muted-foreground">
+          Bio
+        </Label>
         <Textarea
           id="profile-bio"
           value={bio}
