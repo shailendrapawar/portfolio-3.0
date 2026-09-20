@@ -9,15 +9,25 @@ import {
   CONTACT_ACK_TEMPLATE_KEY,
   type ContactAckTemplateData,
 } from "./contact-acknowledgement-template"
+import {
+  passwordResetOtpTemplate,
+  PASSWORD_RESET_OTP_TEMPLATE_KEY,
+  type PasswordResetOtpTemplateData,
+} from "./password-reset-otp-template"
 
 export type { RenderedEmail }
-export { CONTACT_TEMPLATE_KEY, CONTACT_ACK_TEMPLATE_KEY }
+export {
+  CONTACT_TEMPLATE_KEY,
+  CONTACT_ACK_TEMPLATE_KEY,
+  PASSWORD_RESET_OTP_TEMPLATE_KEY,
+}
 
 // Registry of every email template, keyed by its templateKey. Add new
 // templates here and extend `EmailTemplateData` with their data shape.
 const templates = {
   [CONTACT_TEMPLATE_KEY]: contactTemplate,
   [CONTACT_ACK_TEMPLATE_KEY]: contactAcknowledgementTemplate,
+  [PASSWORD_RESET_OTP_TEMPLATE_KEY]: passwordResetOtpTemplate,
 }
 
 // Maps each templateKey to the data its template expects, so callers get a
@@ -25,6 +35,7 @@ const templates = {
 export type EmailTemplateData = {
   [CONTACT_TEMPLATE_KEY]: ContactTemplateData
   [CONTACT_ACK_TEMPLATE_KEY]: ContactAckTemplateData
+  [PASSWORD_RESET_OTP_TEMPLATE_KEY]: PasswordResetOtpTemplateData
 }
 
 export type EmailTemplateKey = keyof typeof templates

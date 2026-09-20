@@ -32,3 +32,30 @@ export const resetPasswordPayload = z
     path: ["confirmPassword"],
   })
 export type IResetPasswordPayload = z.infer<typeof resetPasswordPayload>
+
+// Forgot-password flow (public, OTP-based). The code is always sent to the
+// single admin's email (SEED_ADMIN_EMAIL) server-side, so no email is accepted
+// from the client — the flow starts straight at the code step.
+
+const otpField = z.string().regex(/^\d{6}$/, "Enter the 6-digit code")
+
+// Step 1: verify the emailed code.
+export const verifyOtpPayload = z.object({
+  otp: otpField,
+})
+export type IVerifyOtpPayload = z.infer<typeof verifyOtpPayload>
+
+// Step 2: set a new password, re-checking the same code.
+export const resetPasswordWithOtpPayload = z
+  .object({
+    otp: otpField,
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  })
+export type IResetPasswordWithOtpPayload = z.infer<
+  typeof resetPasswordWithOtpPayload
+>

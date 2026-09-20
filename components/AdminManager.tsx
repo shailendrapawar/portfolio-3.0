@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { ArrowLeft, LogOut, Mail } from "lucide-react"
+import { ArrowLeft, Loader2, LogOut, Mail } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import ProjectManager from "@/features/project/components/ProjectManager"
@@ -12,6 +12,7 @@ import MessageManager from "@/features/message/components/MessageManager"
 import ProfileInfoForm from "@/features/auth/components/ProfileInfoForm"
 import ProfilePictureForm from "@/features/auth/components/ProfilePictureForm"
 import ResetPasswordButton from "@/features/auth/components/ResetPasswordButton"
+import LoadingOverlay from "@/components/LoadingOverlay"
 import { useUnreadMessagesCount } from "@/features/message/hooks/useUnreadMessagesCount"
 import { useLogout } from "@/features/auth/hooks/useLogout"
 
@@ -47,6 +48,8 @@ export default function AdminManager() {
 
   return (
     <div className="flex flex-col gap-2">
+      <LoadingOverlay show={loggingOut} label="Signing out…" />
+
       <div className="mx-auto flex w-full max-w-3xl gap-2 px-6 pt-6">
         <Link
           href="/"
@@ -60,9 +63,13 @@ export default function AdminManager() {
           type="button"
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive transition-colors hover:bg-destructive/20 disabled:pointer-events-none disabled:opacity-50 min-[450px]:px-4"
+          className="flex shrink-0 items-center justify-center gap-1.5 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive transition-all hover:bg-destructive/20 disabled:pointer-events-none disabled:opacity-70 min-[450px]:px-4"
         >
-          <LogOut className="size-4" />
+          {loggingOut ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <LogOut className="size-4" />
+          )}
           <span className="hidden min-[450px]:inline">
             {loggingOut ? "Logging out…" : "Logout"}
           </span>

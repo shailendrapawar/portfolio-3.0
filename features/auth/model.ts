@@ -44,6 +44,18 @@ const userSchema = new mongoose.Schema(
       },
       id: { type: String },
     },
+
+    // Forgot-password abuse guard. `otpRequestCount` counts reset-code requests;
+    // once the cap is exceeded the account is `locked` and the OTP flow is
+    // refused until the owner signs in normally (which clears both).
+    otpRequestCount: {
+      type: Number,
+      default: 0,
+    },
+    locked: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
