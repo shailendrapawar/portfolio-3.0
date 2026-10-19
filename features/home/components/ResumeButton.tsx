@@ -1,11 +1,23 @@
 "use client";
 
 import Modal from "@/components/Modal";
-import { resumePreviewUrl, resumeDownloadUrl } from "@/lib/data/socialItems";
+import { getResumeUrls } from "@/lib/data/resume";
 import { useResumeModal } from "../hooks/useResumeModal";
 
-export default function ResumeButton() {
+type ResumeButtonProps = {
+  // The resume link set in the admin dashboard.
+  resumeUrl?: string;
+};
+
+export default function ResumeButton({ resumeUrl }: ResumeButtonProps) {
   const { open, setOpen, openModal } = useResumeModal();
+
+  const urls = getResumeUrls(resumeUrl);
+
+  // Nothing to show until a resume link is set in the admin dashboard.
+  if (!urls) return null;
+
+  const { previewUrl, downloadUrl } = urls;
 
   return (
     <>
@@ -30,7 +42,8 @@ export default function ResumeButton() {
               Resume
             </h2>
             <a
-              href={resumeDownloadUrl}
+              href={downloadUrl}
+              download
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full bg-primary px-4 py-2 text-xs font-medium text-white transition-transform hover:scale-105 sm:text-sm"
@@ -40,7 +53,7 @@ export default function ResumeButton() {
           </header>
 
           <iframe
-            src={resumePreviewUrl}
+            src={previewUrl}
             title="Resume preview"
             allow="autoplay"
             className="w-full flex-1 border-0 bg-muted"

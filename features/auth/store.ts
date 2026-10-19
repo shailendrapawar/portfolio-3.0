@@ -7,6 +7,7 @@ export interface AuthUser {
   email: string
   designation?: string
   bio?: string
+  resumeUrl?: string
   profilePicture?: { url: string; id?: string }
 }
 
@@ -25,6 +26,8 @@ interface AuthState {
     designation: string
     bio: string
   }) => void
+  // Update just the resume link (after a successful save).
+  setResumeUrl: (resumeUrl: string) => void
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -43,6 +46,10 @@ export const useAuthStore = create<AuthState>()(
       setProfileInfo: (info) =>
         set((state) =>
           state.user ? { user: { ...state.user, ...info } } : state
+        ),
+      setResumeUrl: (resumeUrl) =>
+        set((state) =>
+          state.user ? { user: { ...state.user, resumeUrl } } : state
         ),
     }),
     {

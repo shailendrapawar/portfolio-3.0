@@ -34,6 +34,13 @@ const userSchema = new mongoose.Schema(
         "MERN stack wizard , with a knack for real-time features, and seemless user experience",
     },
 
+    // Public link to the owner's resume (e.g. a Google Drive share URL).
+    // Set from the admin dashboard; surfaced on the landing page.
+    resumeUrl: {
+      type: String,
+      default: "",
+    },
+
     // Cloudinary-backed profile photo. `id` (public_id) lets us delete the
     // previous asset when a new one is uploaded. Shown in the About Me section.
     profilePicture: {

@@ -52,13 +52,3 @@ export const footerLinks = socialLinks.filter((s) => s.inFooter)
 export const socialUrls: Record<string, string> = Object.fromEntries(
   socialLinks.map((s) => [s.key, s.href])
 )
-
-// Resume hosted on Google Drive. Requires the file's sharing to be
-// "Anyone with the link". Derived from the file ID so both URLs stay in sync.
-const RESUME_FILE_ID = "1YjhRsnsJTi9tprizzl3K00exPDq2cMAo"
-
-// Embeddable viewer for the iframe preview (works cross-origin + on mobile).
-export const resumePreviewUrl = `https://drive.google.com/file/d/${RESUME_FILE_ID}/preview`
-
-// Direct-download endpoint; Drive serves it with Content-Disposition: attachment.
-export const resumeDownloadUrl = `https://drive.google.com/uc?export=download&id=${RESUME_FILE_ID}`

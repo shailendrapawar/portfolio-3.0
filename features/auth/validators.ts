@@ -13,6 +13,13 @@ export const updateProfilePayload = z.object({
   name: z.string().min(1).max(80).optional(),
   designation: z.string().max(120).optional(),
   bio: z.string().max(1000).optional(),
+  // Resume link. A non-empty value must be a valid URL; "" clears it.
+  resumeUrl: z
+    .string()
+    .max(2048)
+    .url("Enter a valid URL")
+    .optional()
+    .or(z.literal("")),
   profilePicture: z
     .object({ url: z.string().url(), id: z.string().min(1) })
     .optional(),

@@ -45,7 +45,7 @@ async function Landing() {
 
           <FadeIn delay={0.36}>
             <div className="flex h-10 w-55 gap-2 text-foreground sm:h-12 sm:w-65 md:h-14 md:w-80">
-              <ResumeButton />
+              <ResumeButton resumeUrl={profile?.resumeUrl} />
               <Link
                 className="flex h-full w-[50%] cursor-pointer items-center justify-center rounded-br-3xl border-2 border-primary transition-all hover:w-[70%] sm:text-lg md:text-2xl"
                 href="/contact"

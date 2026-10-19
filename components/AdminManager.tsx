@@ -11,6 +11,7 @@ import ExperienceManager from "@/features/experience/components/ExperienceManage
 import MessageManager from "@/features/message/components/MessageManager"
 import ProfileInfoForm from "@/features/auth/components/ProfileInfoForm"
 import ProfilePictureForm from "@/features/auth/components/ProfilePictureForm"
+import ResumeForm from "@/features/auth/components/ResumeForm"
 import ResetPasswordButton from "@/features/auth/components/ResetPasswordButton"
 import LoadingOverlay from "@/components/LoadingOverlay"
 import { useUnreadMessagesCount } from "@/features/message/hooks/useUnreadMessagesCount"
@@ -123,6 +124,7 @@ export default function AdminManager() {
         <div className="w-full px-4 pb-6 sm:px-6">
           <ProfilePictureForm />
           <ProfileInfoForm />
+          <ResumeForm />
           <ResetPasswordButton />
         </div>
       )}

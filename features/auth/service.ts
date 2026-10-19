@@ -129,6 +129,7 @@ export class AuthService extends DBRepository {
     if (payload.name !== undefined) user.name = payload.name
     if (payload.designation !== undefined) user.designation = payload.designation
     if (payload.bio !== undefined) user.bio = payload.bio
+    if (payload.resumeUrl !== undefined) user.resumeUrl = payload.resumeUrl
 
     await user.save()
 
@@ -263,7 +264,7 @@ export class AuthService extends DBRepository {
     await connectDB()
 
     const user = await UserModel.findOne()
-      .select("name designation bio profilePicture")
+      .select("name designation bio resumeUrl profilePicture")
       .lean()
 
     if (!user) return null
@@ -272,6 +273,7 @@ export class AuthService extends DBRepository {
       name: user.name as string,
       designation: user.designation as string | undefined,
       bio: user.bio as string | undefined,
+      resumeUrl: user.resumeUrl as string | undefined,
       profilePicture: user.profilePicture as
         | { url: string; id?: string }
         | undefined,
