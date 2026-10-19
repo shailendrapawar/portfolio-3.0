@@ -24,7 +24,7 @@ export const socialLinks: ISocialLink[] = [
   {
     key: "linkedin",
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/shailendra-pawar792/",
+    href: "https://www.linkedin.com/in/shailendra-pawar-dev",
     icon: FaLinkedin,
     inFooter: true,
   },

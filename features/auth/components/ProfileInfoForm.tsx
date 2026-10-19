@@ -34,6 +34,7 @@ export default function ProfileInfoForm() {
           id="profile-name"
           value={name}
           disabled={saving}
+          maxLength={50}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
         />

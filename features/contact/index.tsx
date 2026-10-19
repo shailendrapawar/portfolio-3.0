@@ -123,6 +123,7 @@ export default function Contact() {
               onChange={handleChange}
               placeholder="Enter your name"
               disabled={loading}
+              maxLength={50}
               className="h-11 rounded-full px-4"
             />
 
@@ -155,14 +156,20 @@ export default function Contact() {
               </SelectContent>
             </Select>
 
-            <Textarea
-              name="message"
-              value={emailData.message}
-              onChange={handleChange}
-              placeholder="Enter your message"
-              disabled={loading}
-              className="min-h-32 rounded-2xl px-4 py-3"
-            />
+            <div className="flex flex-col gap-1">
+              <Textarea
+                name="message"
+                value={emailData.message}
+                onChange={handleChange}
+                placeholder="Enter your message"
+                disabled={loading}
+                maxLength={300}
+                className="min-h-32 rounded-2xl px-4 py-3"
+              />
+              <span className="self-end text-xs text-muted-foreground">
+                {emailData.message.length}/300
+              </span>
+            </div>
 
             {status && (
               <p

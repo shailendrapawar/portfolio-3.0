@@ -2,10 +2,13 @@ import { z } from "zod"
 import { MESSAGE_STATUS } from "./model"
 
 export const createMessagePayload = z.object({
-  name: z.string().min(1),
+  name: z.string().min(1).max(50, "Name must be at most 50 characters"),
   email: z.email(),
   purpose: z.string().min(1),
-  message: z.string().min(1),
+  message: z
+    .string()
+    .min(1)
+    .max(300, "Message must be at most 300 characters"),
 })
 export type ICreateMessagePayload = z.infer<typeof createMessagePayload>
 

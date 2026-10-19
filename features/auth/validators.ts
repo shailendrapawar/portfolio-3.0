@@ -10,7 +10,7 @@ export type ILoginPayload = z.infer<typeof loginPayload>
 // text fields, and/or a profile picture (uploaded via /api/upload first, then
 // persisted here as its Cloudinary { url, id }).
 export const updateProfilePayload = z.object({
-  name: z.string().min(1).max(80).optional(),
+  name: z.string().min(1).max(50).optional(),
   designation: z.string().max(120).optional(),
   bio: z.string().max(1000).optional(),
   // Resume link. A non-empty value must be a valid URL; "" clears it.
